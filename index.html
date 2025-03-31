@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MODELO LINKS PARA FORMULÁRIOS/ENEL CE</title>
+  <style>
+      /* Estilos gerais e aprimoramento dos botões */
+      body { 
+          font-family: Cambria, Cochin, Georgia, Times, sans-serif; 
+          background-color: #f0f0f0; 
+          padding: 3px;
+      }
+      .container { 
+          width: 95%; 
+          margin: auto; 
+      }
+      /* Página 1 e Página 2 */
+      #page1, #page2 {
+          background: #fff;
+          padding: 20px;
+          margin-top: -36px;
+      }
+      /* Estilos da árvore de checklists */
+      .tree { 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+      }
+      .branch { 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          flex-wrap: wrap; 
+          margin: 20px 0; 
+      }
+      .button-default {
+          border: none;
+          border: 1px solid #141414;
+          padding: 12px 20px;
+          margin: 10px;
+          background-color: #fff;
+          cursor: pointer;
+          font-size: 16px;
+          border-radius: 8px;
+          box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .button-default:hover {
+          transform: scale(1.02);
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+      .button-default:active {
+          transform: scale(0.98);
+      }
+      .active-button { 
+          background-color: #dcdcdc; 
+      }
+      .completed-button {
+          background-color: #e0ffe0;
+          border: 2px solid #2ecc71;
+      }
+      .active-checklist-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-left: 10px;
+      }
+      .timer-display { 
+          margin-bottom: 5px; 
+          font-size: 14px; 
+          color: #333; 
+      }
+      .connection-line {
+          width: 100%;
+          height: 2px;
+          background-color: black;
+          margin-top: 5px;
+      }
+      /* Popups */
+      #popup, #error-popup, #checklist-popup, #pdf-popup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          padding: 20px;
+          background-color: rgba(0, 0, 0, 0.8);
+          color: white;
+          font-size: 16px;
+          border-radius: 5px;
+          z-index: 1000;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          text-align: center;
+      }
+      .popup-buttons {
+          display: flex;
+          justify-content: space-around;
+          margin-top: 10px;
+      }
+      .popup-buttons button {
+          padding: 8px 16px;
+          font-size: 14px;
+          border-radius: 4px;
+          cursor: pointer;
+          border: none;
+      }
+      .yes-button {
+          background-color: #4CAF50;
+          color: white;
+      }
+      .no-button {
+          background-color: #f44336;
+          color: white;
+      }
+      /* Caixa de Preview e Observação */
+      #preview-box {
+          border: 1px solid #ddd;
+          padding: 10px;
+          margin-top: -5px;
+          background-color: #f0f0f0;
+          font-family: monospace;
+          font-size: 14px;
+          box-sizing: border-box;
+          white-space: pre-wrap;
+          word-break: break-all;
+          overflow-x: hidden;
+      }
+      /* Botões de ação */
+      #button-container {
+          margin-top: 20px;
+          text-align: center;
+      }
+      .button-action {
+          background-color: #00b145;
+          color: white;
+          padding: 8px 16px;
+          margin: 5px;
+          cursor: pointer;
+          font-size: 14px;
+          border-radius: 4px;
+          transition: all 0.3s ease;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          border: none;
+      }
+      .disabled-btn {
+          background-color: #e0e0e0;
+          cursor: not-allowed;
+      }
+      /* Global clock e botão de reinicialização */
+      #global-clock {
+          position: fixed;
+          top: 10px;
+          left: 10px;
+          font-size: 24px;
+          font-family: 'Courier New', Courier, monospace;
+          color: #fff;
+          background-color: #000;
+          padding: 10px;
+          border-radius: 8px;
+          z-index: 1001;
+          display: none;
+      }
+      #reset-button {
+          top: 799px;
+          right: 48px;
+          font-size: 14px;
+          padding: 7px 32px;
+          border-radius: 23px;
+          background-color: #f44336;
+          color: white;
+          border: none;
+          cursor: pointer;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          z-index: 1002;
+      }
+      /* Estilo para os selects de equipe */
+      select.select-team {
+         width: 100%;
+         padding: 7px;
+         margin: 4px 0;
+         font-size: 14px;
+         border: 1px solid #ddd;
+         text-transform: uppercase;
+         background-color: rgba(0, 0, 0, 0.8);
+         color: white;
+         border-radius: 5px;
+      }
+      .active-checklist-container .button-default {
+          background-color: #000000;
+          border: 2px solid #000000;
+          color: #ffffff;
+          padding: 12px 20px;
+          margin: 10px;
+          border-radius: 8px;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      }
+      .active-checklist-container .button-default:hover {
+          transform: scale(1.02);
+          background-color: #f5b041;
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+      .active-checklist-container .button-default:active {
+          transform: scale(0.98);
+      }
+      
+      /* Bloqueia o pull-to-refresh no Chrome mobile */
+      html, body {
+          overscroll-behavior-y: none;
+      }
+  </style>
+  <!-- Biblioteca html2pdf para gerar o PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <!-- Global Timer -->
+  <div id="global-clock"></div>
+
+  <div class="container">
+    <!-- Página 1: Dados de preenchimento e checklists -->
+    <div id="page1">
+      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS ENEL/CE</h2>
+      <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
+      
+      <h4>Preencha os dados:</h4>
+      <label for="placa">📰 PLACA:</label> 
+      <select id="placa" class="select-team">
+          <option value="">Selecione</option>
+          <option value="EJL6060">EJL6060</option>
+          <option value="EUR2259">EUR2259</option>
+      </select>
+      
+      <label for="lead">🚗 LEAD:</label>
+      <select id="lead" class="select-team">
+          <option value="">Selecione</option>
+          <option value="DFJ-SG-01B">DFJ-SG-01B</option>
+          <option value="DFJ-SG-02B">DFJ-SG-02B</option>
+      </select>
+      <br>
+      <label for="responsavel">👤 Responsável do Checklist:</label>
+      <select id="responsavel" class="select-team">
+          <option value="">Selecione</option>
+          <option value="Adalberto Girao Matos">Adalberto Girao Matos</option>
+          <option value="Ademar Marcos Garcia da Silva">Ademar Marcos Garcia da Silva</option>
+      </select>
+      <br>
+      <label for="supervisor">👷🏻‍♂️ Supervisor:</label>
+      <select id="supervisor" class="select-team">
+          <option value="">Selecione</option>
+          <option value="Adalberto Girao Matos">Adalberto Girao Matos</option>
+          <option value="Ademar Marcos Garcia da Silva">Ademar Marcos Garcia da Silva</option>
+      </select>
+      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">LISTA DE CHECKLIST DISPONÍVEIS</h2>
+      <div class="tree">
+          <div class="branch">
+              <button class="button-default" id="checklist1" onclick="handleClick(this, 'Checklist Inspeção Diária - Emergencial', 'https://forms.office.com/e/Nvn25a1t5e')">Checklist Inspeção Diária - Emergencial</button>
+          </div>
+          <div class="connection-line"></div>
+          <div class="branch">
+              <button class="button-default" id="checklist2" onclick="handleClick(this, 'Checklist Inspeção Diária - Linha Viva', 'https://forms.office.com/e/TLBAKKXTrB')">Checklist Inspeção Diária - Linha Viva</button>
+              <div class="connection-line"></div>
+              <br>
+              <button class="button-default" id="checklist3" onclick="handleClick(this, 'Checklist Inspeção Diária - Manutenção Preventiva', 'https://forms.office.com/e/vtdCQFQm2b')">Checklist Inspeção Diária - Manutenção Preventiva</button>
+          </div>
+          <div class="connection-line"></div>
+          <div class="branch">
+              <button class="button-default" id="checklist4" onclick="handleClick(this, 'Checklist Funcionamento das Câmeras', 'https://forms.office.com/e/fDwAaF14qA')">Checklist Funcionamento das Câmeras</button>
+              <div class="connection-line"></div>
+              <br>
+              <button class="button-default" id="checklist5" onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">Protocolo Controle Viaturas</button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Página 2: Caixa de Preview e Observação -->
+    <div id="page2">
+      <div id="preview-box">
+          <pre id="preview-text"></pre>
+      </div>
+      <!-- Mensagem final/observação -->
+      <div id="final-message">
+          <br>
+          Por favor, realize todos os checklist obrigatórios de cada atividade.<br>
+          Após isso, retorne à esta aba para concluir os demais.<br>
+          Quando todos obrigatórios, forem concluídos você poderá:<br>
+          Salvar e encaminhar via WhatsApp...
+      </div>
+      <!-- Área de botões para ações -->
+      <div id="button-container">
+          <button class="button-action" id="save-pdf-button" onclick="savePdf()">Salvar PDF</button>
+          <button class="button-action disabled-btn" id="send-button" onclick="encaminharWhatsApp()">Encaminhar WhatsApp</button>
+      </div>
+      <br>
+      <button id="reset-button" onclick="resetPage()">Reiniciar todos<br>Checklist</button>        
+    </div>
+  </div>
+
+  <!-- Popups -->
+  <div id="error-popup">
+      <p id="error-message"></p>
+      <div class="popup-buttons">
+          <button class="yes-button" id="error-popup-close">Fechar</button>
+      </div>
+  </div>
+  <div id="popup">
+      <p>Bem-vindo! Deseja iniciar o checklist?</p>
+      <div class="popup-buttons">
+          <button class="yes-button" onclick="startProcess()">Sim</button>
+          <button class="no-button" onclick="closeWelcomePopup()">Não</button>
+      </div>
+  </div>
+  <div id="checklist-popup">
+      <h3>Você precisa encerrar o checklist ativo antes de iniciar outro!</h3>
+      <div class="popup-buttons">
+          <button class="yes-button" onclick="closeChecklistPopup()">OK</button>
+      </div>
+  </div>
+  <div id="pdf-popup">
+      <p>PDF salvo com sucesso!</p>
+      <div class="popup-buttons">
+          <button class="yes-button" id="pdf-popup-close">Fechar</button>
+      </div>
+  </div>
+
+  <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Enel_Group_logo.svg" alt="Logo ENEL" style="width: 193px; height: auto; display: block; margin: 20px auto;">
+  <p style="text-align: center; font-style: italic; font-family: 'Courier New', Courier, monospace; margin-top: 40px;">
+      © 2025 Emanuel Aguiar (Assistente Administrativo Insourcing - Enel CE)<br>Todos os direitos reservados.
+  </p>
+
+  <script>
+      // Variáveis globais
+      let processStarted = false;
+      let activeChecklist = null;
+      let activeTimerInterval = null;
+      let activeContainer = null;
+      let selectedChecklists = [];
+      let globalTimerInterval = null;
+      let globalTimerStart = null;
+      let welcomePopupShown = false;
+      let pdfSaved = false;
+
+      function showErrorPopupCustom(message) {
+          document.getElementById('error-message').textContent = message;
+          document.getElementById('error-popup').style.display = 'block';
+      }
+
+      function formatFullDateTime(date) {
+          const meses = [
+              "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+              "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+          ];
+          let dia = date.getDate();
+          let mes = meses[date.getMonth()];
+          let ano = date.getFullYear();
+          let horas = date.getHours();
+          let minutos = date.getMinutes();
+          let segundos = date.getSeconds();
+          mes = mes.charAt(0).toUpperCase() + mes.slice(1);
+          let strHoras = `${horas} ${horas === 1 ? "hora" : "horas"}`;
+          let strMinutos = `${minutos} ${minutos === 1 ? "minuto" : "minutos"}`;
+          let strSegundos = `${segundos} ${segundos === 1 ? "segundo" : "segundos"}`;
+          return `${dia} de ${mes} de ${ano} às ${strHoras} e ${strMinutos} e ${strSegundos}`;
+      }
+
+      function getMissingTeamFields() {
+          let missing = [];
+          if (!document.getElementById('placa').value) missing.push("placa");
+          if (!document.getElementById('lead').value) missing.push("lead");
+          if (!document.getElementById('responsavel').value) missing.push("responsável");
+          if (!document.getElementById('supervisor').value) missing.push("supervisor");
+          return missing;
+      }
+
+      function canSavePdf() {
+          let missing = getMissingTeamFields();
+          if (missing.length > 0) {
+              showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
+              return false;
+          }
+          let completedCount = selectedChecklists.filter(item => item.ended).length;
+          if (completedCount < 3) {
+              showErrorPopupCustom("Por favor, complete pelo menos 3 checklists antes de salvar o PDF.");
+              return false;
+          }
+          return true;
+      }
+
+      document.getElementById('error-popup-close').addEventListener('click', function() {
+          document.getElementById('error-popup').style.display = 'none';
+      });
+      document.getElementById('pdf-popup-close').addEventListener('click', function() {
+          document.getElementById('pdf-popup').style.display = 'none';
+      });
+
+      function showWelcomePopup() {
+          if (!welcomePopupShown && !processStarted) {
+              document.getElementById('popup').style.display = 'block';
+              welcomePopupShown = true;
+              disableButtons();
+          }
+      }
+      function closeWelcomePopup() {
+          document.getElementById('popup').style.display = 'none';
+      }
+
+      function disableButtons() {
+          document.querySelectorAll('.button-default').forEach(btn => btn.classList.add('disabled'));
+      }
+      function enableButtons() {
+          document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('disabled'));
+      }
+
+      function checkTeamFields() {
+          let missing = getMissingTeamFields();
+          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios.");
+          else {
+              document.getElementById('error-popup').style.display = 'none';
+              showWelcomePopup();
+          }
+      }
+
+      document.getElementById('placa').addEventListener('change', checkTeamFields);
+      document.getElementById('lead').addEventListener('change', checkTeamFields);
+      document.getElementById('responsavel').addEventListener('change', checkTeamFields);
+      document.getElementById('supervisor').addEventListener('change', checkTeamFields);
+
+      function resetPage() {
+          window.location.reload();
+      }
+
+      function startProcess() {
+          document.getElementById('popup').style.display = 'none';
+          processStarted = true;
+          enableButtons();
+          globalTimerStart = Date.now();
+          document.getElementById('global-clock').style.display = 'block';
+          globalTimerInterval = setInterval(() => {
+              let totalSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
+              document.getElementById('global-clock').textContent = formatTime(totalSeconds);
+          }, 1000);
+      }
+
+      function formatTime(totalSeconds) {
+          let minutes = Math.floor(totalSeconds / 60);
+          let seconds = totalSeconds % 60;
+          let result = "";
+          if (minutes > 0) {
+              result += minutes + (minutes === 1 ? " minuto" : " minutos");
+              if (seconds > 0) result += " e " + seconds + (seconds === 1 ? " segundo" : " segundos");
+          } else result += seconds + (seconds === 1 ? " segundo" : " segundos");
+          return result;
+      }
+
+      // Atualiza o preview, incluindo os checklists realizados e o tempo da sessão (contador global)
+      function updatePreview() {
+          let endedChecklists = selectedChecklists.filter(item => item.ended);
+          if (endedChecklists.length === 0) {
+              document.getElementById('preview-text').textContent = "";
+              return;
+          }
+          let placa = document.getElementById('placa').value;
+          let lead = document.getElementById('lead').value;
+          let responsavel = document.getElementById('responsavel').value;
+          let supervisor = document.getElementById('supervisor').value;
+          let previewMessage = "------------ *DADOS DA EQUIPE* ------------\n\n";
+          previewMessage += `*PLACA:* ${placa}\n`;
+          previewMessage += `*LEAD:* ${lead}\n`;
+          previewMessage += `*RESPONSAVEL CHECKLIST:* ${responsavel}\n`;
+          previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
+          previewMessage += "----------- *CHECKLISTS REALIZADOS* ----------\n\n";
+          endedChecklists.forEach(item => {
+              previewMessage += `*${item.name}:*\n`;
+              previewMessage += `Iniciado às ${item.startTime}\n`;
+              previewMessage += `Encerrado às ${item.endTime}\n`;
+              previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
+              previewMessage += "\n--------------------------------------------------\n\n";
+          });
+          if (endedChecklists.length >= 3) {
+              let now = new Date();
+              previewMessage += formatFullDateTime(now) + "\n";
+              let totalTime = endedChecklists.reduce((acc, item) => acc + item.elapsedSeconds, 0);
+              previewMessage += `*Tempo total gasto:* ${formatTime(totalTime)}\n`;
+          }
+          // Adiciona o tempo da sessão, que corresponde ao contador global
+          if (globalTimerStart) {
+              let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
+              previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
+          }
+          document.getElementById('preview-text').textContent = previewMessage;
+      }
+
+      // Chamada de updatePreview a cada 2 minutos
+      setInterval(updatePreview, 120000);
+
+      function handleClick(button, checklistName, url) {
+          let missing = getMissingTeamFields();
+          if (missing.length > 0) {
+              showErrorPopupCustom("Preencha os campos obrigatórios.");
+              return;
+          }
+          if (!processStarted) return;
+          if (activeChecklist !== null) {
+              document.getElementById('checklist-popup').style.display = 'block';
+              return;
+          }
+          activeChecklist = {
+              name: checklistName,
+              button: button,
+              startTimestamp: Date.now(),
+              startTime: new Date().toLocaleTimeString(),
+              elapsedSeconds: 0,
+              ended: false
+          };
+          selectedChecklists.push(activeChecklist);
+          updatePreview();
+          window.open(url, '_blank');
+          activeContainer = document.createElement('div');
+          activeContainer.className = 'active-checklist-container';
+          let timerSpan = document.createElement('span');
+          timerSpan.className = 'timer-display';
+          timerSpan.textContent = "Tempo: 0 segundos";
+          let endButton = document.createElement('button');
+          endButton.className = "button-default";
+          endButton.textContent = "Encerrar Checklist";
+          endButton.onclick = endChecklist;
+          activeContainer.appendChild(timerSpan);
+          activeContainer.appendChild(endButton);
+          button.parentNode.insertBefore(activeContainer, button.nextSibling);
+          activeTimerInterval = setInterval(() => {
+              let elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
+              timerSpan.textContent = `Tempo: ${formatTime(elapsedSeconds)}`;
+          }, 1000);
+      }
+
+      function closeChecklistPopup() {
+          document.getElementById('checklist-popup').style.display = 'none';
+      }
+
+      function endChecklist() {
+          if (activeTimerInterval) {
+              clearInterval(activeTimerInterval);
+              activeTimerInterval = null;
+          }
+          let elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
+          activeChecklist.elapsedSeconds = elapsedSeconds;
+          activeChecklist.endTime = new Date().toLocaleTimeString();
+          activeChecklist.ended = true;
+          if (activeChecklist.button) {
+              activeChecklist.button.classList.remove('active-button');
+              activeChecklist.button.classList.add('completed-button');
+              if (!activeChecklist.button.innerHTML.includes("(Realizado)")) {
+                  activeChecklist.button.innerHTML += ' <span style="font-style: italic; color: #555;">(Realizado)</span>';
+              }
+          }
+          if (activeContainer && activeContainer.parentNode) {
+              activeContainer.parentNode.removeChild(activeContainer);
+          }
+          document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('active-button'));
+          activeChecklist = null;
+          activeContainer = null;
+          updatePreview();
+          enableButtons();
+      }
+
+      // Atualiza o preview antes de salvar o PDF
+      function savePdf() {
+          updatePreview();
+          if (!canSavePdf()) {
+              return;
+          }
+          var container = document.querySelector('.container');
+          var width = container.offsetWidth;
+          var height = container.offsetHeight;
+          
+          let placa = document.getElementById('placa').value;
+          let lead = document.getElementById('lead').value;
+          
+          let now = new Date();
+          let fullDate = formatFullDateTime(now);
+          let fileName = `${lead} (${placa}) Checklist realizado ${fullDate}.pdf`;
+          
+          html2pdf(container, {
+              margin: 0,
+              filename: fileName,
+              image: { type: 'jpeg', quality: 0.99 },
+              html2canvas: { scale: 2 },
+              jsPDF: {
+                  unit: 'px',
+                  format: [width, height],
+                  orientation: 'portrait'
+              }
+          }).then(() => {
+              pdfSaved = true;
+              const pdfButton = document.getElementById('save-pdf-button');
+              pdfButton.disabled = true;
+              pdfButton.textContent = "PDF já salvo";
+              const sendButton = document.getElementById('send-button');
+              sendButton.classList.remove('disabled-btn');
+              document.getElementById('pdf-popup').style.display = 'block';
+          });
+      }
+
+      function encaminharWhatsApp() {
+          let missing = getMissingTeamFields();
+          if (missing.length > 0) {
+              showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
+              return;
+          }
+          if (!pdfSaved) {
+              showErrorPopupCustom("Você precisa salvar o PDF antes de encaminhar via WhatsApp.");
+              return;
+          }
+          let message = encodeURIComponent(document.getElementById('preview-text').textContent);
+          window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+      }
+
+      function clearData() {
+          selectedChecklists = [];
+          updatePreview();
+          if (activeContainer && activeContainer.parentNode) {
+              activeContainer.parentNode.removeChild(activeContainer);
+          }
+          activeChecklist = null;
+          enableButtons();
+      }
+
+      window.onload = function() {
+          checkTeamFields();
+      }
+      
+      /* Bloqueia o botão de voltar do celular */
+      window.history.pushState(null, null, window.location.href);
+      window.addEventListener('popstate', function (event) {
+          window.history.pushState(null, null, window.location.href);
+      });
+  </script>
+</body>
+</html>
