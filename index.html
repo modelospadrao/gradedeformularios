@@ -383,16 +383,16 @@
         .checklist-list {
           display: flex;
           flex-direction: column;
-          gap: 12px;               /* espaço entre itens */
+          gap: 28px;               /* espaço entre itens */
         }
 
         /* Cada item numa caixinha */
         .checklist-item {
           background: #f9f9f9;
           border: 1px solid #ddd;
-          border-left: 9px solid #e63946;  /* indicador colorido */
+          border-left: 8px solid #e63946;  /* indicador colorido */
           border-radius: 30px;
-          padding: 19px;
+          padding: 16px;
           display: flex;
           align-items: center;
           flex-wrap: wrap;           /* permite quebra */
@@ -403,7 +403,7 @@
           background: none;
           border: none;
           box-shadow: none;
-          padding: 0;
+          padding: 0px 10px 16px;
           margin: 0;
           font-size: 1rem;
           text-align: left;
@@ -451,8 +451,8 @@
           color: #fff;
         }
         .button-default.completed-button {
-          background-color: #91f2bb !important;
-          border: 2px solid #02d25a !important;
+          background-color: rgba(76, 254, 46, 0.27) !important;
+          border: 2px solid #9ad2b2 !important;
           color: #000000 !important;
         }
         .button-default.completed-button::after {
@@ -576,6 +576,31 @@
       word-wrap: break-word;    /* quebra palavras longas */
       box-sizing: border-box;   /* inclui padding na largura total */
       text-align: center;       /* centraliza o texto */
+    }
+    .checklist-item {
+      position: relative;   /* cria o contexto para posicionamento absoluto */
+    }
+
+    .status-box {
+      position: absolute;   /* retira do fluxo normal */
+      bottom: 31px;          /* 8px acima da borda inferior */
+      right: 26px;         /* 12px afastado da borda direita */
+      background-color: #fff;
+      border: 1px solid #ccc;
+      color: #333;
+      padding: 6px 12px;
+      border-radius: 9px;
+      font-size: 0.85rem;
+      text-align: left;
+      /* z-index para garantir que fique sobre o botão */
+      z-index: 2;
+    }
+    .status-box .status-text {
+      font-weight: bold;
+    }
+    .status-box .time-text {
+      display: block;
+      margin-top: 4px;
     }
   </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
@@ -967,30 +992,56 @@
       }
 
       function endChecklist() {
-          if (activeTimerInterval) {
-              clearInterval(activeTimerInterval);
-              activeTimerInterval = null;
-          }
-          let elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
-          activeChecklist.elapsedSeconds = elapsedSeconds;
-          activeChecklist.endTime = new Date().toLocaleTimeString();
-          activeChecklist.ended = true;
-          if (activeChecklist.button) {
-              activeChecklist.button.classList.remove('active-button');
-              activeChecklist.button.classList.add('completed-button');
-              if (!activeChecklist.button.innerHTML.includes("(Realizado)")) {
-                  activeChecklist.button.innerHTML += ' <span style="font-style: italic; color: #555;">(Realizado)</span>';
-              }
-          }
-          if (activeContainer && activeContainer.parentNode) {
-              activeContainer.parentNode.removeChild(activeContainer);
-          }
-          document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('active-button'));
-          activeChecklist = null;
-          activeContainer = null;
-          updatePreview();
-          enableButtons();
+      // 1) para o timer “flutuante”
+      if (activeTimerInterval) {
+          clearInterval(activeTimerInterval);
+          activeTimerInterval = null;
       }
+
+      // 2) calcula o tempo gasto
+      const elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
+      const elapsedFormatted = formatTime(elapsedSeconds);
+      activeChecklist.elapsedSeconds = elapsedSeconds;
+      activeChecklist.endTime = new Date().toLocaleTimeString();
+      activeChecklist.ended = true;
+
+          if (activeChecklist.button) {
+      // já bloqueou e pintou o botão de verde...
+      activeChecklist.button.classList.remove('active-button');
+      activeChecklist.button.classList.add('completed-button');
+      activeChecklist.button.disabled = true;
+
+      // cria a caixinha de status
+      const statusBox = document.createElement('div');
+      statusBox.className = 'status-box';
+
+      // “Realizado”
+      const statusText = document.createElement('div');
+      statusText.className = 'status-text';
+      statusText.textContent = 'Realizado';
+      statusBox.appendChild(statusText);
+
+      // “Tempo: X”
+      const timeText = document.createElement('div');
+      timeText.className = 'time-text';
+      timeText.textContent = `Tempo: ${elapsedFormatted}`;
+      statusBox.appendChild(timeText);
+
+      // anexa ao botão
+      activeChecklist.button.appendChild(statusBox);
+    }
+
+      // 6) limpa o timer extra e reabilita demais
+      if (activeContainer && activeContainer.parentNode) {
+          activeContainer.parentNode.removeChild(activeContainer);
+      }
+      document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('active-button'));
+      activeChecklist = null;
+      activeContainer = null;
+      updatePreview();
+      enableButtons();
+  }
+
 
       // Atualiza o preview antes de salvar o PDF
       function savePdf() {
