@@ -602,6 +602,10 @@
       display: block;
       margin-top: 3px;
     }
+        #preview-text {
+      white-space: pre-wrap;    /* preserva \n mas também quebra linhas */
+      word-break: break-word;    /* quebra palavras longas quando necessário */
+    }
   </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -917,18 +921,18 @@
           let lead = document.getElementById('lead').value;
           let responsavel = document.getElementById('responsavel').value;
           let supervisor = document.getElementById('supervisor').value;
-          let previewMessage = "------------ *DADOS DA EQUIPE* ------------\n\n";
+          let previewMessage = "---- *DADOS DA EQUIPE* ----\n\n";
           previewMessage += `*PLACA:* ${placa}\n`;
           previewMessage += `*LEAD:* ${lead}\n`;
-          previewMessage += `*RESPONSAVEL CHECKLIST:* ${responsavel}\n`;
+          previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
           previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
-          previewMessage += "----------- *CHECKLISTS REALIZADOS* ----------\n\n";
+          previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
           endedChecklists.forEach(item => {
               previewMessage += `*${item.name}:*\n`;
               previewMessage += `Iniciado às ${item.startTime}\n`;
               previewMessage += `Encerrado às ${item.endTime}\n`;
               previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
-              previewMessage += "\n--------------------------------------------------\n\n";
+              previewMessage += "\n----------------------------\n\n";
           });
           if (endedChecklists.length >= 3) {
               let now = new Date();
@@ -941,7 +945,8 @@
               let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
               previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
           }
-          document.getElementById('preview-text').textContent = previewMessage;
+          document.getElementById('preview-text').innerHTML =
+              previewMessage.replace(/\n/g, '<br>');
       }
 
       // Chamada de updatePreview a cada 2 minutos
