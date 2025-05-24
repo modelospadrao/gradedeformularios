@@ -195,19 +195,393 @@
           border-radius: 8px;
           transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
       }
-      .active-checklist-container .button-default:hover {
-          transform: scale(1.02);
-          background-color: #f5b041;
-          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-      }
-      .active-checklist-container .button-default:active {
-          transform: scale(0.98);
-      }
-      
-      /* Bloqueia o pull-to-refresh no Chrome mobile */
+     /* Bloqueia o pull-to-refresh no Chrome mobile */
       html, body {
           overscroll-behavior-y: none;
       }
+      /* Container das seções */
+        #services-section, #checklist-section {
+          background: #fff;
+          padding: 20px;
+          margin-top: 20px;
+          border-radius: 8px;
+        }
+
+        /* Títulos */
+        #services-section h2,
+        #checklist-section h2 {
+          text-align: center;
+          font-size: 1.3rem;
+          color: #1a73e8;
+          margin-bottom: 12px;
+        }
+
+        /* Botões de serviço (sempre ativos) */
+        .service-button {
+          border: none;
+          padding: 10px 16px;
+          margin: 6px;
+          background-color: #0d3d8b;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: transform .15s;
+        }
+        .service-button:hover {
+          transform: scale(1.03);
+        }
+
+        /* Certifique-se de que seus botões de checklist têm esta classe */
+        .checklist-button {
+          /* herda seu estilo atual */
+        }
+        /* Desabilitar apenas para checklist */
+        .disabled {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      /* Caixa maior para destacar o link do RH */
+        .service-highlight {
+          border: -6px solid #1a73e8;       /* cor do contorno */
+          background-color: #e8f0fe;       /* fundo suave */
+          padding: 17px 16px;              /* espaçamento interno */
+          border-radius: 8px;              /* cantos arredondados */
+          text-align: center;              /* centraliza o link */
+          margin: 16px 0;                  /* espaçamento externo */
+        }
+
+        /* Ajuste extra no botão dentro da caixa */
+        .service-highlight .service-button {
+          font-size: 1.1rem;               /* texto um pouco maior */
+          padding: 12px 24px;              /* botão levemente maior */
+        }
+      /* Botão personalizado para “Outros Serviços” */
+        #other-services .service-button-green {
+          /* borda mais espessa e escura */
+          border: 1px solid #333;        /* ajuste o código de cor se quiser outro tom */
+          /* mantém o degradê de fundo */
+          background: linear-gradient(135deg, var(--other-btn-start), var(--other-btn-end));
+          border-radius: 12px;
+          padding: 14px 28px;
+          margin: 10px;
+          font-size: 1rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          color: #f50101;
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+          transition:
+            background 0.3s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: calc(33% - 20px);
+        }
+
+        /* Efeito no hover/focus */
+        #other-services .service-button-green:hover,
+        #other-services .service-button-green:focus {
+          background: var(--other-btn-hover);
+          transform: translateY(-3px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsivo: 2 colunas abaixo de 800px */
+        @media (max-width: 800px) {
+          #other-services .service-button-green {
+            width: calc(50% - 20px);
+          }
+        }
+        /* Responsivo: 1 coluna abaixo de 500px */
+        @media (max-width: 500px) {
+          #other-services .service-button-green {
+            width: 100%;
+          }
+        }
+              #other-services .service-button-green .icon {
+          margin-right: 8px;
+          font-size: 1.2rem;
+        }
+                .checklist-icon {
+          /* 1. Tamanho do ícone */
+          font-size: 1.8rem;            /* ex: 1rem, 1.5rem, 2rem… */
+
+          /* 2. Cor (se for um ícone de fonte) */
+          color: #333333;               /* ex: #000, #e63946… */
+
+          /* 3. Espaçamento */
+          margin-top:    0;             /* margem superior */
+          margin-right:  0.1em;         /* margem direita */
+          margin-bottom: 0;             /* margem inferior */
+          margin-left:   0;             /* margem esquerda */
+
+          /* 4. Posicionamento relativo */
+          position: relative;           /* permite usar top/left */
+          top:    0;                    /* move pra baixo (+) ou pra cima (–) */
+          left:   0;                    /* move pra direita (+) ou pra esquerda (–) */
+
+          /* 5. Transformações */
+          transform: 
+            translate(0, 0)             /* desloca x, y */
+            rotate(0deg)                /* rotaciona */
+            scale(1);                   /* escala */
+
+          /* 6. Filtros e efeitos visuais */
+          filter: 
+            brightness(1)               /* 0.5 escuro – 1 normal – 1.5 claro */
+            contrast(1)                 /* 0 sem contraste – 1 normal */
+            grayscale(0)                /* 0 colorido – 1 totalmente cinza */
+            hue-rotate(0deg)            /* roda matiz */
+            invert(0);                  /* 0 normal – 1 invertido */
+
+          /* 7. Sombra (se quiser destacar) */
+          text-shadow: 
+            1px 1px 2px rgba(0,0,0,0.3),  /* sombra leve */
+            0 0 4px rgba(255,255,255,0.5); /* brilho */
+
+          /* 8. Transições para animações suaves */
+          transition: 
+            font-size 0.2s ease, 
+            color 0.2s ease, 
+            transform 0.2s ease, 
+            filter 0.2s ease;
+
+          /* 9. Cursor e seleção */
+          cursor: default;             /* pointer, text, etc */
+          user-select: none;           /* evita seleção do emoji */
+
+          /* 10. Exemplo de background-image (caso queira usar SVG ou PNG em vez de emoji) */
+          /* background-image: url('icone.svg');
+             background-size: contain;
+             background-repeat: no-repeat;
+             display: inline-block;
+             width: 1.8rem;
+             height: 1.8rem;
+             text-indent: -9999px; */
+        }
+      /* Container geral da seção */
+        #checklist-section {
+          background: #fff;
+          border: 2px solid #e63946;
+          border-radius: 8px;
+          padding: 20px;
+          margin: 40px 0;
+        }
+
+        /* Título centralizado */
+        #checklist-section h2 {
+          text-align: center;
+          font-size: 1.4rem;
+          color: #e63946;
+          margin-bottom: 16px;
+          border-bottom: 2px solid #e63946;
+          padding-bottom: 8px;
+        }
+
+        /* Lista de itens */
+        .checklist-list {
+          display: flex;
+          flex-direction: column;
+          gap: 12px;               /* espaço entre itens */
+        }
+
+        /* Cada item numa caixinha */
+        .checklist-item {
+          background: #f9f9f9;
+          border: 1px solid #ddd;
+          border-left: 4px solid #e63946;  /* indicador colorido */
+          border-radius: 6px;
+          padding: 12px;
+          display: flex;
+          align-items: center;
+        }
+
+        /* Botão ocupa todo o item sem padrões extras */
+        .checklist-item .button-default {
+          background: none;
+          border: none;
+          box-shadow: none;
+          padding: 0;
+          margin: 0;
+          font-size: 1rem;
+          text-align: left;
+          width: 100%;
+          cursor: pointer;
+        }
+
+        /* Hover no item inteiro */
+        .checklist-item:hover {
+          background: #fff5f5;
+        }
+
+        /* Ícone e texto */
+        .checklist-icon {
+          font-size: 1.6em;
+          margin-right: 0.5em;
+          vertical-align: middle;
+        }
+                /* === Ajustes para o botão “Encerrar Checklist” === */
+        .active-checklist-container {
+          display: flex !important;
+          flex-direction: column;
+          align-items: flex-start;
+          margin-top: 8px;            /* espaço entre o item e o botão */
+          gap: 6px;                   /* espaço entre timer e botão */
+        }
+
+        /* Botão dentro da active-checklist-container */
+        .active-checklist-container .button-default {
+          display: inline-block !important;
+          background-color: #000 !important;
+          color: #ffffff !important;
+          border: 0px solid #000 !important;
+          padding: 3px 25px !important;
+          border-radius: 6px !important;
+          font-size: 0.88rem !important;
+          box-shadow: none !important;
+          width: auto !important;     /* não expande na largura */
+          cursor: pointer;
+        }
+
+        /* Hover no botão de encerrar */
+        .active-checklist-container .button-default:hover {
+          background-color: #f5b041 !important;
+          color: #000 !important;
+          transform: scale(1.02) !important;
+        }
+              .button-default.active-button::after {
+          content: " (Checklist iniciado)";
+          font-style: italic;
+          margin-left: 0.5em;
+          color: #fff;
+        }
+        .button-default.completed-button {
+          background-color: #91f2bb !important;
+          border: 2px solid #02d25a !important;
+          color: #000000 !important;
+        }
+        .button-default.completed-button::after {
+          font-style: italic;
+          margin-left: 0.5em;
+          color: #fff;
+        }
+      /* Estilos da árvore de checklists */
+      .tree { 
+          display: flex; 
+          flex-direction: column; 
+          align-items: center; 
+      }
+      .branch { 
+          display: flex; 
+          justify-content: center; 
+          align-items: center; 
+          flex-wrap: wrap; 
+          margin: 20px 0; 
+      }
+      .button-default {
+          border: none;
+          border: 1px solid #141414;
+          padding: 12px 20px;
+          margin: 10px;
+          background-color: #fff;
+          cursor: pointer;
+          font-size: 16px;
+          border-radius: 8px;
+          box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .button-default:hover {
+          transform: scale(1.02);
+          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      }
+      .button-default:active {
+          transform: scale(0.98);
+      }
+      /* ... demais estilos inalterados ... */
+
+      /* === Ajustes minimalistas para Seção RH === */
+      #services-section {
+          background: #f0f4f8;
+          border-left: 4px solid #1565c0;
+          padding: 16px;
+          margin-top: 20px;
+          border-radius: 4px;
+          border: 2px solid #1565c0;
+        border-radius: 8px;
+      }
+      #services-section h2 {
+          font-size: 1.5rem;
+          color: #1565c0;
+          margin-bottom: 16px;
+          text-align: center;
+          margin-top: 0;
+      }
+      #services-section .services-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 12px;
+      }
+      #services-section .service-button {
+          background: #fff;
+          color: #1565c0;
+          border: 1px solid #1565c0;
+          padding: 10px 16px;
+          font-size: 0.95rem;
+          border-radius: 4px;
+          box-shadow: none;
+      }
+      #services-section .service-button:hover {
+          background: #1565c0;
+          color: #fff;
+      }
+
+      /* === Ajustes minimalistas para Outros Serviços === */
+      #other-services {
+          background: #f5f5f5;
+          padding: 6px;
+          margin-top: 19px;
+          border-radius: 31px;
+      }
+      #other-services h2 {
+          font-size: 1.9rem;
+          color: #2e7d32;
+          margin-bottom: 16px;
+          text-align: center;
+          margin-top: 0;
+      }
+      #other-services .service-button-green {
+          background: #2e7d32;
+          color: #fff;
+          border: none;
+          padding: 10px 13px;
+          box-shadow: none;
+          font-size: 0.93rem;
+          border-radius: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 94%;
+      }
+      #other-services .service-button-green:hover {
+          background: #1b5e20;
+      }
+      #services-section .services-grid .service-highlight {
+      /* faz o elemento ocupar toda a largura do grid */
+      grid-column: 1 / -1;
+      /* centraliza dentro da célula estendida */
+      justify-self: center;
+      /* espaçamento acima */
+      margin-top: 12px;
+    }
+      #services-section .service-highlight .service-button {
+      display: block;           /* ocupa toda a largura disponível */
+      width: 100%;              /* garante que a caixa expanda */
+      white-space: normal;      /* permite quebra de linha */
+      word-wrap: break-word;    /* quebra palavras longas */
+      box-sizing: border-box;   /* inclui padding na largura total */
+      text-align: center;       /* centraliza o texto */
+    }
   </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -221,8 +595,39 @@
     <div id="page1">
       <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS ENEL/CE</h2>
       <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
-      
-      <h4>Preencha os dados:</h4>
+     <!-- Seção de Serviços RH -->
+      <div id="services-section">
+            <h2>SERVIÇOS DE RH GERAL</h2>
+            <div class="services-grid">
+              <button class="service-button" onclick="openService('Emitir Contra-cheque', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">Emitir Contra-cheque</button>
+              <button class="service-button" onclick="openService('Emitir Aviso-Férias', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">Emitir Aviso-Férias</button>
+              <button class="service-button" onclick="openService('Portal RH', 'https://enel.service-now.com/oip')">Portal RH</button>
+              <button class="service-button" onclick="openService('Forponto', 'https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">Forponto</button>
+              <button class="service-button" onclick="openService('Formulário de Atestado Médico', 'https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">Formulário de Atestado Médico</button>
+              <button class="service-button" onclick="openService('Formulário de Hora Extra', 'https://forms.office.com/e/yTpZUE9Gg4')">Formulário de Hora Extra</button>
+              <button class="service-button" onclick="openService('Alterar Número Celular (SMS)', 'https://aka.ms/mfasetup')">Alterar Número Celular (SMS)</button>
+                <!-- Caixa de destaque para RH – Medicina Ocupacional -->
+            <div class="service-highlight">
+            <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
+              RH – Medicina Ocupacional<br>(Enviar E-mail)
+            </a>
+          </div>
+            </div>
+          </div>
+
+          <!-- Nova seção “Outros Serviços” -->
+          <div id="other-services">
+            <h2>OUTROS LINKS</h2>
+            <div class="services-grid">
+              <button class="service-button-green" onclick="openService('SGI ENEL GRIDS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">SGI ENEL GRIDS</button>
+              <button class="service-button-green" onclick="openService('GLUX', 'https://sistemas.glux.com.br/')">GLUX</button>
+              <button class="service-button-green" onclick="openService('ABRIR LISTA DE ITS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">Abrir Lista de ITs</button>
+            </div>
+          </div>
+     <h2 style="color: #000000; font-size: 22px; text-align: center; margin: 20px 0; border-bottom: 5px solid #000000;">
+      SEÇÃO DE CHECKLIST
+    </h2>  
+            <h4>Preencha os dados obrigatórios:</h4>
       <label for="placa">📰 PLACA:</label> 
       <select id="placa" class="select-team">
           <option value="">Selecione</option>
@@ -250,27 +655,58 @@
           <option value="Adalberto Girao Matos">Adalberto Girao Matos</option>
           <option value="Ademar Marcos Garcia da Silva">Ademar Marcos Garcia da Silva</option>
       </select>
-      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">LISTA DE CHECKLIST DISPONÍVEIS</h2>
-      <div class="tree">
-          <div class="branch">
-              <button class="button-default" id="checklist1" onclick="handleClick(this, 'Checklist Inspeção Diária - Emergencial', 'https://forms.office.com/e/Nvn25a1t5e')">Checklist Inspeção Diária - Emergencial</button>
-          </div>
-          <div class="connection-line"></div>
-          <div class="branch">
-              <button class="button-default" id="checklist2" onclick="handleClick(this, 'Checklist Inspeção Diária - Linha Viva', 'https://forms.office.com/e/TLBAKKXTrB')">Checklist Inspeção Diária - Linha Viva</button>
-              <div class="connection-line"></div>
-              <br>
-              <button class="button-default" id="checklist3" onclick="handleClick(this, 'Checklist Inspeção Diária - Manutenção Preventiva', 'https://forms.office.com/e/vtdCQFQm2b')">Checklist Inspeção Diária - Manutenção Preventiva</button>
-          </div>
-          <div class="connection-line"></div>
-          <div class="branch">
-              <button class="button-default" id="checklist4" onclick="handleClick(this, 'Checklist Funcionamento das Câmeras', 'https://forms.office.com/e/fDwAaF14qA')">Checklist Funcionamento das Câmeras</button>
-              <div class="connection-line"></div>
-              <br>
-              <button class="button-default" id="checklist5" onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">Protocolo Controle Viaturas</button>
-          </div>
-      </div>
+
+<!-- NOVA CAIXA DE CHECKLISTS OBRIGATÓRIOS -->
+<div id="checklist-section">
+  <h2>LISTA DE CHECKLIST OBRIGATÓRIOS<BR>(SAÍDA DA BASE)</h2>
+  <div class="checklist-list">
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Checklist Inspeção Diária – Emergencial', 'https://forms.office.com/e/Nvn25a1t5e')">
+        <span class="checklist-icon">🚗</span>
+        Checklist Inspeção Diária – Emergencial
+      </button>
     </div>
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Checklist Inspeção Diária – Linha Viva', 'https://forms.office.com/e/TLBAKKXTrB')">
+        <span class="checklist-icon">🚗</span>
+        Checklist Inspeção Diária – Linha Viva
+      </button>
+    </div>
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Checklist Inspeção Diária – Preventiva', 'https://forms.office.com/e/vtdCQFQm2b')">
+        <span class="checklist-icon">🚗</span>
+        Checklist Inspeção Diária – Preventiva
+      </button>
+    </div>
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Checklist Funcionamento das Câmeras', 'https://forms.office.com/e/fDwAaF14qA')">
+        <span class="checklist-icon">📷</span>
+        Checklist Funcionamento das Câmeras
+      </button>
+    </div>
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">
+        <span class="checklist-icon">🚨</span>
+        Protocolo Controle Viaturas (KM..)
+      </button>
+    </div>
+    <div class="checklist-item">
+      <button class="button-default"
+              onclick="handleClick(this, 'Recebimento de EPI/EPC', 'https://forms.office.com/e/vqmr8Vw2uE')">
+        <span class="checklist-icon">📄</span>
+        Protocolo Recebimento de EPI/EPC
+      </button>
+    </div>
+  </div>
+</div>
+    <h2 style="color: #000000; font-size: 22px; text-align: center; margin: 45px 0">
+      RELATÓRIO DE CHECKLIST REALIZADOS
+    </h2>  
     
     <!-- Página 2: Caixa de Preview e Observação -->
     <div id="page2">
@@ -282,7 +718,7 @@
           <br>
           Por favor, realize todos os checklist obrigatórios de cada atividade.<br>
           Após isso, retorne à esta aba para concluir os demais.<br>
-          Quando todos obrigatórios, forem concluídos você poderá:<br>
+          Quando todos forem concluídos você poderá:<br>
           Salvar e encaminhar via WhatsApp...
       </div>
       <!-- Área de botões para ações -->
@@ -293,9 +729,7 @@
       <br>
       <button id="reset-button" onclick="resetPage()">Reiniciar todos<br>Checklist</button>        
     </div>
-  </div>
-
-  <!-- Popups -->
+    <!-- Popups -->
   <div id="error-popup">
       <p id="error-message"></p>
       <div class="popup-buttons">
@@ -328,7 +762,13 @@
   </p>
 
   <script>
-      // Variáveis globais
+      // sinalizador para pular validação ao recarregar
+    let skipValidation = sessionStorage.getItem('skipValidation') === 'true';
+    if (skipValidation) {
+      // limpamos o flag para que só valha neste carregamento
+      sessionStorage.removeItem('skipValidation');
+    }
+          // Variáveis globais
       let processStarted = false;
       let activeChecklist = null;
       let activeTimerInterval = null;
@@ -412,7 +852,7 @@
 
       function checkTeamFields() {
           let missing = getMissingTeamFields();
-          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios.");
+          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios para iniciar o contador de cheklist.");
           else {
               document.getElementById('error-popup').style.display = 'none';
               showWelcomePopup();
@@ -424,9 +864,12 @@
       document.getElementById('responsavel').addEventListener('change', checkTeamFields);
       document.getElementById('supervisor').addEventListener('change', checkTeamFields);
 
-      function resetPage() {
-          window.location.reload();
-      }
+        function resetPage() {
+      // marca que queremos pular validação no próximo onload
+      sessionStorage.setItem('skipValidation', 'true');
+      // execução de F5
+      window.location.reload();
+    }
 
       function startProcess() {
           document.getElementById('popup').style.display = 'none';
@@ -625,14 +1068,95 @@
       }
 
       window.onload = function() {
-          checkTeamFields();
+      // só chama checkTeamFields se não estivermos no reset
+      if (!skipValidation) {
+        checkTeamFields();
       }
+    };
       
       /* Bloqueia o botão de voltar do celular */
       window.history.pushState(null, null, window.location.href);
       window.addEventListener('popstate', function (event) {
           window.history.pushState(null, null, window.location.href);
       });
+      // Abre links de serviço sem tocar no contador
+        function openService(name, url) {
+          window.open(url, '_blank');
+        }
+
+        // Desativa apenas botões de checklist
+        function disableChecklistButtons() {
+          document.querySelectorAll('.checklist-button')
+                  .forEach(btn => btn.classList.add('disabled'));
+        }
+        function enableChecklistButtons() {
+          document.querySelectorAll('.checklist-button')
+                  .forEach(btn => btn.classList.remove('disabled'));
+        }
+      function loadExternalData() {
+      // 1) Placas
+      fetch('placas_JACARECANGA.json')
+        .then(res => res.json())
+        .then(data => {
+          const placaSelect = document.getElementById('placa');
+          placaSelect.innerHTML = '<option value="">Selecione</option>';
+          data.forEach(p => {
+            const opt = document.createElement('option');
+            opt.value = p;
+            opt.textContent = p;
+            placaSelect.appendChild(opt);
+          });
+        })
+        .catch(err => console.error('Erro ao carregar placas:', err));
+
+      // 2) Leads
+      fetch('leads_JACARECANGA.json')
+        .then(res => res.json())
+        .then(data => {
+          const leadSelect = document.getElementById('lead');
+          leadSelect.innerHTML = '<option value="">Selecione</option>';
+          data.forEach(l => {
+            const opt = document.createElement('option');
+            opt.value = l;
+            opt.textContent = l;
+            leadSelect.appendChild(opt);
+          });
+        })
+        .catch(err => console.error('Erro ao carregar leads:', err));
+
+      // 3) Eletricistas (para RESPONSÁVEL e SUPERVISOR)
+      fetch('eletricistas.json')
+        .then(res => res.json())
+        .then(data => {
+          ['responsavel', 'supervisor'].forEach(id => {
+            const sel = document.getElementById(id);
+            sel.innerHTML = '<option value="">Selecione</option>';
+            data.forEach(name => {
+              const opt = document.createElement('option');
+              opt.value = name;
+              opt.textContent = name;
+              sel.appendChild(opt);
+            });
+          });
+        })
+        .catch(err => console.error('Erro ao carregar eletricistas:', err));
+    }
+      fetch('supervisores.json')
+      .then(res => res.json())
+      .then(data => {
+        const supSel = document.getElementById('supervisor');
+        supSel.innerHTML = '<option value="">Selecione</option>';
+        data.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name;
+          opt.textContent = name;
+          supSel.appendChild(opt);
+        });
+      })
+      .catch(err => console.error('Erro ao carregar supervisores:', err));
+
+    // Garante que rodará junto com o onload já existente
+    window.addEventListener('load', loadExternalData);
   </script>
 </body>
 </html>
