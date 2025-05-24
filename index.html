@@ -626,30 +626,22 @@
       <label for="placa">📰 PLACA:</label> 
       <select id="placa" class="select-team">
           <option value="">Selecione</option>
-          <option value="EJL6060">EJL6060</option>
-          <option value="EUR2259">EUR2259</option>
       </select>
       
       <label for="lead">🚗 LEAD:</label>
       <select id="lead" class="select-team">
           <option value="">Selecione</option>
-          <option value="DFJ-SG-01B">DFJ-SG-01B</option>
-          <option value="DFJ-SG-02B">DFJ-SG-02B</option>
-      </select>
+          </select>
       <br>
       <label for="responsavel">👤 Responsável do Checklist:</label>
       <select id="responsavel" class="select-team">
           <option value="">Selecione</option>
-          <option value="Adalberto Girao Matos">Adalberto Girao Matos</option>
-          <option value="Ademar Marcos Garcia da Silva">Ademar Marcos Garcia da Silva</option>
-      </select>
+          </select>
       <br>
       <label for="supervisor">👷🏻‍♂️ Supervisor:</label>
       <select id="supervisor" class="select-team">
           <option value="">Selecione</option>
-          <option value="Adalberto Girao Matos">Adalberto Girao Matos</option>
-          <option value="Ademar Marcos Garcia da Silva">Ademar Marcos Garcia da Silva</option>
-      </select>
+          </select>
 
 <!-- NOVA CAIXA DE CHECKLISTS OBRIGATÓRIOS -->
 <div id="checklist-section">
@@ -847,7 +839,7 @@
 
       function checkTeamFields() {
           let missing = getMissingTeamFields();
-          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios para iniciar o contador de cheklist.");
+          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios caso deseje iniciar os cheklists.");
           else {
               document.getElementById('error-popup').style.display = 'none';
               showWelcomePopup();
@@ -1104,54 +1096,64 @@
         })
         .catch(err => console.error('Erro ao carregar placas:', err));
 
-      // 2) Leads
-      fetch('leads_JACARECANGA.json')
-        .then(res => res.json())
-        .then(data => {
-          const leadSelect = document.getElementById('lead');
-          leadSelect.innerHTML = '<option value="">Selecione</option>';
-          data.forEach(l => {
-            const opt = document.createElement('option');
-            opt.value = l;
-            opt.textContent = l;
-            leadSelect.appendChild(opt);
-          });
-        })
-        .catch(err => console.error('Erro ao carregar leads:', err));
+            // 1) Placas
+        fetch('placas_JACARECANGA.json')
+          .then(res => res.json())
+          .then(data => {
+            const placaSelect = document.getElementById('placa');
+            placaSelect.innerHTML = '<option value="">Selecione</option>';
+            data.forEach(p => {
+              const opt = document.createElement('option');
+              opt.value = p; opt.textContent = p;
+              placaSelect.appendChild(opt);
+            });
+          })
+          .catch(err => console.error('Erro ao carregar placas:', err));
 
-      // 3) Eletricistas (para RESPONSÁVEL e SUPERVISOR)
-      fetch('eletricistas.json')
-        .then(res => res.json())
-        .then(data => {
-          ['responsavel', 'supervisor'].forEach(id => {
-            const sel = document.getElementById(id);
-            sel.innerHTML = '<option value="">Selecione</option>';
+        // 2) Leads
+        fetch('leads_JACARECANGA.json')
+          .then(res => res.json())
+          .then(data => {
+            const leadSelect = document.getElementById('lead');
+            leadSelect.innerHTML = '<option value="">Selecione</option>';
+            data.forEach(l => {
+              const opt = document.createElement('option');
+              opt.value = l; opt.textContent = l;
+              leadSelect.appendChild(opt);
+            });
+          })
+          .catch(err => console.error('Erro ao carregar leads:', err));
+
+        // 3) Eletricistas → apenas RESPONSÁVEL
+        fetch('eletricistas.json')
+          .then(res => res.json())
+          .then(data => {
+            const respSel = document.getElementById('responsavel');
+            respSel.innerHTML = '<option value="">Selecione</option>';
             data.forEach(name => {
               const opt = document.createElement('option');
-              opt.value = name;
-              opt.textContent = name;
-              sel.appendChild(opt);
+              opt.value = name; opt.textContent = name;
+              respSel.appendChild(opt);
             });
-          });
-        })
-        .catch(err => console.error('Erro ao carregar eletricistas:', err));
-    }
-      fetch('supervisores.json')
-      .then(res => res.json())
-      .then(data => {
-        const supSel = document.getElementById('supervisor');
-        supSel.innerHTML = '<option value="">Selecione</option>';
-        data.forEach(name => {
-          const opt = document.createElement('option');
-          opt.value = name;
-          opt.textContent = name;
-          supSel.appendChild(opt);
-        });
-      })
-      .catch(err => console.error('Erro ao carregar supervisores:', err));
+          })
+          .catch(err => console.error('Erro ao carregar eletricistas:', err));
 
-    // Garante que rodará junto com o onload já existente
-    window.addEventListener('load', loadExternalData);
+        // 4) Supervisores → apenas SUPERVISOR
+        fetch('supervisores.json')
+          .then(res => res.json())
+          .then(data => {
+            const supSel = document.getElementById('supervisor');
+            supSel.innerHTML = '<option value="">Selecione</option>';
+            data.forEach(name => {
+              const opt = document.createElement('option');
+              opt.value = name; opt.textContent = name;
+              supSel.appendChild(opt);
+            });
+          })
+          .catch(err => console.error('Erro ao carregar supervisores:', err));
+      }
+
+      window.addEventListener('load', loadExternalData);
   </script>
 </body>
 </html>
