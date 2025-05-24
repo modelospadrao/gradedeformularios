@@ -364,9 +364,9 @@
         #checklist-section {
           background: #fff;
           border: 2px solid #e63946;
-          border-radius: 8px;
-          padding: 20px;
-          margin: 40px 0;
+          border-radius: 7px;
+          padding: 14px;
+          margin: 29px 0;
         }
 
         /* Título centralizado */
@@ -376,7 +376,7 @@
           color: #e63946;
           margin-bottom: 16px;
           border-bottom: 2px solid #e63946;
-          padding-bottom: 8px;
+          padding-bottom: 7px;
         }
 
         /* Lista de itens */
@@ -390,11 +390,12 @@
         .checklist-item {
           background: #f9f9f9;
           border: 1px solid #ddd;
-          border-left: 4px solid #e63946;  /* indicador colorido */
-          border-radius: 6px;
-          padding: 12px;
+          border-left: 9px solid #e63946;  /* indicador colorido */
+          border-radius: 30px;
+          padding: 19px;
           display: flex;
           align-items: center;
+          flex-wrap: wrap;           /* permite quebra */
         }
 
         /* Botão ocupa todo o item sem padrões extras */
@@ -414,14 +415,7 @@
         .checklist-item:hover {
           background: #fff5f5;
         }
-
-        /* Ícone e texto */
-        .checklist-icon {
-          font-size: 1.6em;
-          margin-right: 0.5em;
-          vertical-align: middle;
-        }
-                /* === Ajustes para o botão “Encerrar Checklist” === */
+        /* === Ajustes para o botão “Encerrar Checklist” === */
         .active-checklist-container {
           display: flex !important;
           flex-direction: column;
@@ -665,42 +659,42 @@
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Emergencial', 'https://forms.office.com/e/Nvn25a1t5e')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária – Emergencial
+        Checklist Inspeção Diária<br>(Emergencial)
       </button>
     </div>
     <div class="checklist-item">
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Linha Viva', 'https://forms.office.com/e/TLBAKKXTrB')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária – Linha Viva
+        Checklist Inspeção Diária<br>(Linha Viva)
       </button>
     </div>
     <div class="checklist-item">
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Preventiva', 'https://forms.office.com/e/vtdCQFQm2b')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária – Preventiva
+        Checklist Inspeção Diária<br>(Preventiva)
       </button>
     </div>
     <div class="checklist-item">
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Funcionamento das Câmeras', 'https://forms.office.com/e/fDwAaF14qA')">
         <span class="checklist-icon">📷</span>
-        Checklist Funcionamento das Câmeras
+        Checklist das Câmeras
       </button>
     </div>
     <div class="checklist-item">
       <button class="button-default"
               onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">
         <span class="checklist-icon">🚨</span>
-        Protocolo Controle Viaturas (KM..)
+        Protocolo Controle Viaturas
       </button>
     </div>
     <div class="checklist-item">
       <button class="button-default"
               onclick="handleClick(this, 'Recebimento de EPI/EPC', 'https://forms.office.com/e/vqmr8Vw2uE')">
         <span class="checklist-icon">📄</span>
-        Protocolo Recebimento de EPI/EPC
+        Protocolo Recebimento<br>EPI/EPC
       </button>
     </div>
   </div>
