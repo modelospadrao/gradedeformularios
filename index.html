@@ -656,12 +656,16 @@
               <button class="service-button-green" onclick="openService('ABRIR LISTA DE ITS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">Abrir Lista de ITs</button>
             </div>
           </div>
-     <h2 style="color: #000000; font-size: 22px; text-align: center; margin: 20px 0; border-bottom: 5px solid #000000;">
-        INÍCIO - CHECKLISTS
-      </h2>
-      
+    
 
-            <h4>Preencha os dados obrigatórios:</h4>
+<!-- NOVA CAIXA DE CHECKLISTS OBRIGATÓRIOS -->
+<div id="checklist-section">
+   <h2 style="color: #ff0000; font-size: 22px; text-align: center; margin: 20px 0; border-bottom: 5px solid #ff0000;">
+        INÍCIO
+      </h2>
+  <h2>LISTA DE CHECKLIST OBRIGATÓRIOS</h2>
+  
+          <h4>Preencha os dados:</h4>
       <label for="placa">📰 PLACA:</label> 
       <select id="placa" class="select-team">
           <option value="">Selecione</option>
@@ -680,52 +684,55 @@
       <label for="supervisor">👷🏻‍♂️ Supervisor:</label>
       <select id="supervisor" class="select-team">
           <option value="">Selecione</option>
-          </select>
-
-<!-- NOVA CAIXA DE CHECKLISTS OBRIGATÓRIOS -->
-<div id="checklist-section">
-  <h2>LISTAGEM DE CHECKLIST OBRIGATÓRIO<BR>(ANTES DA SAÍDA DA BASE)</h2>
+          </select><BR><BR>
+  
   <div class="checklist-list">
     <div class="checklist-item">
+      <label for="lead">EMERGENCIAL</label>
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Emergencial', 'https://forms.office.com/e/Nvn25a1t5e')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária<br>(Emergencial)
+        Checklist Inspeção Diária
       </button>
     </div>
     <div class="checklist-item">
+      <label for="lead">LINHA LIVA</label>
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Linha Viva', 'https://forms.office.com/e/TLBAKKXTrB')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária<br>(Linha Viva)
+        Checklist Inspeção Diária
       </button>
     </div>
     <div class="checklist-item">
+      <label for="lead">PREVENTIVA</label>
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Inspeção Diária – Preventiva', 'https://forms.office.com/e/vtdCQFQm2b')">
         <span class="checklist-icon">🚗</span>
-        Checklist Inspeção Diária<br>(Preventiva)
+        Checklist Inspeção Diária
       </button>
     </div>
     <div class="checklist-item">
+      <label for="lead">FUNCIONAMENTO DAS CÂMERAS</label>
       <button class="button-default"
               onclick="handleClick(this, 'Checklist Funcionamento das Câmeras', 'https://forms.office.com/e/fDwAaF14qA')">
         <span class="checklist-icon">📷</span>
-        Checklist das Câmeras
+        Checklist Inspeção Diária
       </button>
     </div>
     <div class="checklist-item">
+      <label for="lead">PCV (PROTOCOLO CONTROLE DE VIATURAS)</label>
       <button class="button-default"
               onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">
         <span class="checklist-icon">🚨</span>
-        Protocolo Controle Viaturas
+        Checklist Inspeção Diária
       </button>
     </div>
     <div class="checklist-item">
+      <label for="lead">(PROTOCOLO CONTROLE DE RECEBIMENTO EPI/EPC)</label>
       <button class="button-default"
               onclick="handleClick(this, 'Recebimento de EPI/EPC', 'https://forms.office.com/e/vqmr8Vw2uE')">
         <span class="checklist-icon">📄</span>
-        Protocolo Recebimento<br>EPI/EPC
+        Checklist 
       </button>
     </div>
   </div>
