@@ -937,45 +937,54 @@
 
       // Atualiza o preview, incluindo os checklists realizados e o tempo da sessão (contador global)
       function updatePreview() {
-          let endedChecklists = selectedChecklists.filter(item => item.ended);
-          if (endedChecklists.length === 0) {
-              document.getElementById('preview-text').textContent = "";
-              return;
-          }
-          let placa = document.getElementById('placa').value;
-          let lead = document.getElementById('lead').value;
-          let responsavel = document.getElementById('responsavel').value;
-          let supervisor = document.getElementById('supervisor').value;
-          let previewMessage = "---- *DADOS DA EQUIPE* ----\n\n";
-          previewMessage += `*PLACA:* ${placa}\n`;
-          previewMessage += `*LEAD:* ${lead}\n`;
-          previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
-          previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
-          previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
-          previewMessage += `Total Realizados: ${endedChecklists.length}\n\n`;
-          endedChecklists.forEach(item => {
-              previewMessage += `*${item.name}:*\n`;
-              previewMessage += `Iniciado às ${item.startTime}\n`;
-              previewMessage += `Encerrado às ${item.endTime}\n`;
-              previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
-              previewMessage += "\n----------------------------\n\n";
-          });
-          if (endedChecklists.length >= 3) {
-              let now = new Date();
-              previewMessage += formatFullDateTime(now) + "\n";
-              let totalTime = endedChecklists.reduce((acc, item) => acc + item.elapsedSeconds, 0);
-              previewMessage += `*Tempo total gasto:* ${formatTime(totalTime)}\n`;
-          }
-          // Adiciona o tempo da sessão, que corresponde ao contador global
-          if (globalTimerStart) {
-              let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
-              previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
-          }
-          document.getElementById('relatorio-titulo').textContent = 
-  `RELATÓRIO DE CHECKLIST REALIZADOS (${endedChecklists.length})`;
-          document.getElementById('preview-text').innerHTML =
-              previewMessage.replace(/\n/g, '<br>');
-      }
+        let endedChecklists = selectedChecklists.filter(item => item.ended);
+        if (endedChecklists.length === 0) {
+            document.getElementById('preview-text').textContent = "";
+            return;
+        }
+
+        let placa = document.getElementById('placa').value;
+        let lead = document.getElementById('lead').value;
+        let responsavel = document.getElementById('responsavel').value;
+        let supervisor = document.getElementById('supervisor').value;
+
+        let previewMessage = "---- *DADOS DA EQUIPE* ----\n\n";
+        previewMessage += `*PLACA:* ${placa}\n`;
+        previewMessage += `*LEAD:* ${lead}\n`;
+        previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
+        previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
+
+        previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
+        previewMessage += `Total Realizados: ${endedChecklists.length}\n\n`;
+
+        endedChecklists.forEach(item => {
+            previewMessage += `*${item.name}:*\n`;
+            previewMessage += `Iniciado às ${item.startTime}\n`;
+            previewMessage += `Encerrado às ${item.endTime}\n`;
+            previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
+            previewMessage += "\n----------------------------\n\n";
+        });
+
+        if (endedChecklists.length >= 3) {
+            let now = new Date();
+            previewMessage += formatFullDateTime(now) + "\n";
+            let totalTime = endedChecklists.reduce((acc, item) => acc + item.elapsedSeconds, 0);
+            previewMessage += `*Tempo total gasto:* ${formatTime(totalTime)}\n`;
+        }
+
+        // Adiciona o tempo da sessão, que corresponde ao contador global
+        if (globalTimerStart) {
+            let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
+            previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
+        }
+
+        document.getElementById('relatorio-titulo').textContent = 
+            `RELATÓRIO DE CHECKLIST REALIZADOS (${endedChecklists.length})`;
+
+        // Aqui a correção definitiva: usar textContent ao invés de innerHTML
+        document.getElementById('preview-text').textContent = previewMessage;
+    }
+
 
       // Chamada de updatePreview a cada 2 minutos
       setInterval(updatePreview, 120000);
@@ -1124,9 +1133,13 @@
               showErrorPopupCustom("Você precisa salvar o PDF antes de encaminhar via WhatsApp.");
               return;
           }
-          let message = encodeURIComponent(document.getElementById('preview-text').textContent);
+
+          // Aqui a correção definitiva
+          let message = document.getElementById('preview-text').textContent;
+          message = encodeURIComponent(message);
           window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
       }
+
 
       function clearData() {
           selectedChecklists = [];
