@@ -740,9 +740,9 @@
     
   </div>
 </div>
-    <h2 style="color: #000000; font-size: 22px; text-align: center; margin: 45px 0">
-      RELATÓRIO DE CHECKLIST REALIZADOS
-    </h2>  
+    <h2 id="relatorio-titulo" style="color: #000000; font-size: 22px; text-align: center; margin: 45px 0">
+  RELATÓRIO DE CHECKLIST REALIZADOS (0)
+</h2>  
     
     <!-- Página 2: Caixa de Preview e Observação -->
     <div id="page2">
@@ -947,6 +947,7 @@
           previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
           previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
           previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
+          previewMessage += `Total Realizados: ${endedChecklists.length}\n\n`;
           endedChecklists.forEach(item => {
               previewMessage += `*${item.name}:*\n`;
               previewMessage += `Iniciado às ${item.startTime}\n`;
@@ -965,6 +966,8 @@
               let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
               previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
           }
+          document.getElementById('relatorio-titulo').textContent = 
+  `RELATÓRIO DE CHECKLIST REALIZADOS (${endedChecklists.length})`;
           document.getElementById('preview-text').innerHTML =
               previewMessage.replace(/\n/g, '<br>');
       }
