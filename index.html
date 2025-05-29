@@ -566,6 +566,19 @@
           justify-content: center;
           width: 96%;
       }
+      #other-services .service-button-red {
+          background: #ff8500;
+          color: #fff;
+          border: none;
+          padding: 10px 10px;
+          box-shadow: none;
+          font-size: 0.93rem;
+          border-radius: 29px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 96%;
+      }
       #other-services .service-button-green:hover {
           background: #1b5e20;
       }
@@ -617,6 +630,40 @@
         label[for="titlelead"] {
         font-weight: bold !important;
     }
+    
+    .custom-button-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      margin-top: 20px;
+      background-color: #fefefe;
+      border: 2px dashed #001;
+      border-radius: 12px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-rounded-button {
+      background-color: #0d47a1;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 90%;
+      max-width: 300px;
+      box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+    }
+
+    .custom-rounded-button:hover {
+      background-color: #1565c0;
+      transform: scale(1.03);
+    }
+
   </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -632,7 +679,7 @@
       <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
      <!-- Seção de Serviços RH -->
       <div id="services-section">
-            <h2>SERVIÇOS DE RH GERAL</h2>
+            <h2>ATALHOS DE SERVIÇOS RH ENEL</h2>
             <div class="services-grid">
               <button class="service-button" onclick="openService('Emitir Contra-cheque', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">Emitir Contra-cheque</button>
               <button class="service-button" onclick="openService('Emitir Aviso-Férias', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">Emitir Aviso-Férias</button>
@@ -652,20 +699,32 @@
 
           <!-- Nova seção “Outros Serviços” -->
           <div id="other-services">
-            <h2>OUTROS LINKS</h2>
+            <h2>OUTROS LINKS CONSULTAS</h2>
             <div class="services-grid">
-              <button class="service-button-green" onclick="openService('SGI ENEL GRIDS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">ABRIR (SGI ENEL GRIDS)</button>
-              <button class="service-button-green" onclick="openService('GLUX', 'https://sistemas.glux.com.br/')">ABRIR CONSULTA LAUDOS (GLUX)</button>
-              <button class="service-button-green" onclick="openService('ABRIR LISTA DE ITS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">ABRIR LISTA DISPONIVEIS DE (ITS)</button>
-            <h2 style="color: #ff0000; font-size: 22px; text-align: center; margin: 20px 0; border-bottom: 2px solid #1b5e20;">
-        
-      </h2>
-            
-            <button class="service-button-green" onclick="openService('ABRIR FORMS DE EPI/EPC', 'https://forms.office.com/e/vqmr8Vw2uE')">ABRIR PROTOCOLO CONTROLE DE RECEBIMENTO (EPI/EPC)</button>
+              <button class="service-button-green" onclick="openService('SGI ENEL GRIDS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">ENEL GRIDS (SGI)</button>
+              <button class="service-button-green" onclick="openService('GLUX', 'https://sistemas.glux.com.br/')">CONSULTA LAUDOS (GLUX)</button>
+              <button class="service-button-green" onclick="openService('ABRIR LISTA DE ITS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">LISTA DISPONIVEIS DE (ITS)</button>
             </div>
-            
-          </div>
+      </div>
       
+         <div class="custom-button-box">
+          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS RECEBIMENTO EPI/EPC</h2>
+
+          <button class="custom-rounded-button" onclick="openService('ABRIR FORMS DE EPI/EPC', 'https://forms.office.com/e/vqmr8Vw2uE')">INICIAR FORMULÁRIO</button>
+        </div>
+      
+    
+        <div class="custom-button-box">
+          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS DEVOLUÇÕES DE MATERIAL E SUCATA</h2>
+
+          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">
+            MANUTENÇÃO PREVENTIVA
+          </button>
+
+          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">
+            MANUTENÇÃO EMERGÊNCIA
+          </button>
+        </div>
     
 
 <!-- NOVA CAIXA DE CHECKLISTS OBRIGATÓRIOS -->
@@ -736,7 +795,7 @@
       <button class="button-default"
               onclick="handleClick(this, 'Protocolo Controle Viaturas', 'https://forms.office.com/e/MXA2nN1UE4')">
         <span class="checklist-icon">🚨</span>
-        Checklist PCV (Protocolo de Controle de Viaturas)
+        Checklist Condutor do Veículo (PCV)
       </button>
     </div><BR><BR>
     <h2 style="color: #ff0000; font-size: 22px; text-align: center; margin: 20px 0; border-bottom: 0px solid #ff0000;">
