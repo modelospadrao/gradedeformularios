@@ -1129,8 +1129,13 @@
           window.history.pushState(null, null, window.location.href);
       });
       // Abre links de serviço sem tocar no contador
-        function openService(name, url) {
-          window.open(url, '_blank');
+        function openService(nameOrUrl, urlOptional) {
+          let finalUrl = (urlOptional !== undefined) ? urlOptional : nameOrUrl;
+          if (typeof finalUrl === 'string' && finalUrl.startsWith('http')) {
+            window.open(finalUrl, '_blank');
+          } else {
+            alert("URL inválida.");
+          }
         }
 
         // Desativa apenas botões de checklist
