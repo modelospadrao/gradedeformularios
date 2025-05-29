@@ -694,71 +694,54 @@
   <div class="container">
     <!-- Página 1: Dados de preenchimento e checklists -->
     <div id="page1">
-      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
-      <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
-     <!-- Seção de Serviços RH -->
-      <div id="services-section">
-            <h2>ATALHOS DE SERVIÇOS RH ENEL</h2>
-            <div class="services-grid">
-              <button class="service-button" onclick="openService('Emitir Contra-cheque', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">Emitir Contra-cheque</button>
-              <button class="service-button" onclick="openService('Emitir Aviso-Férias', 'https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">Emitir Aviso-Férias</button>
-              <button class="service-button" onclick="openService('Portal RH', 'https://enel.service-now.com/oip')">Portal RH</button>
-              <button class="service-button" onclick="openService('Forponto', 'https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">Forponto</button>
-              <button class="service-button" onclick="openService('Formulário de Atestado Médico', 'https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">Formulário de Atestado Médico</button>
-              <button class="service-button" onclick="openService('Formulário de Hora Extra', 'https://forms.office.com/e/yTpZUE9Gg4')">Formulário de Hora Extra</button>
-              <button class="service-button" onclick="openService('Alterar Número Celular (SMS)', 'https://aka.ms/mfasetup')">Alterar Número Celular (SMS)</button>
-              <button class="service-button" onclick="openService('OPEN FEEDBACK', 'https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">Open Feedback</button>
-                <!-- Caixa de destaque para RH – Medicina Ocupacional -->
-            <div class="service-highlight">
+            <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
+            <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
+           <!-- Seção de Serviços RH -->
+           <div id="services-section">
+        <h2>ATALHOS DE SERVIÇOS RH ENEL</h2>
+        <div class="services-grid">
+          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">Emitir Contra-cheque</button>
+          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">Emitir Aviso-Férias</button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip')">Portal RH</button>
+          <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">Forponto</button>
+          <button class="service-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">Formulário de Atestado Médico</button>
+          <button class="service-button" onclick="openService('https://forms.office.com/e/yTpZUE9Gg4')">Formulário de Hora Extra</button>
+          <button class="service-button" onclick="openService('https://aka.ms/mfasetup')">Alterar Número Celular (SMS)</button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">Open Feedback</button>
+
+          <div class="service-highlight">
             <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
               RH – Medicina Ocupacional<br>(Enviar E-mail)
             </a>
           </div>
-            </div>
-          </div>
-
-          <!-- Nova seção “Outros Serviços” -->
-          <div id="other-services">
-            <h2>OUTROS LINKS CONSULTAS</h2>
-            <div class="services-grid">
-              <button class="service-button-green" onclick="openService('SGI ENEL GRIDS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">ENEL GRIDS (SGI)</button>
-              <button class="service-button-green" onclick="openService('GLUX', 'https://sistemas.glux.com.br/')">CONSULTA LAUDOS (GLUX)</button>
-              <button class="service-button-green" onclick="openService('ABRIR LISTA DE ITS', 'https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">LISTA DISPONIVEIS DE (ITS)</button>
-            </div>
+        </div>
       </div>
-      
-         <div class="custom-button-box">
-          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS RECEBIMENTO EPI/EPC</h2>
 
-          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">INICIAR FORMULÁRIO</button>
+        <div id="other-services">
+          <h2>OUTROS LINKS CONSULTAS</h2>
+          <div class="services-grid">
+            <button class="service-button-green" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">ENEL GRIDS (SGI)</button>
+            <button class="service-button-green" onclick="openService('https://sistemas.glux.com.br/')">CONSULTA LAUDOS (GLUX)</button>
+            <button class="service-button-green" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/DocSGI/Lists/Acesso%20operacional/Tiles.aspx')">LISTA DISPONÍVEIS DE (ITS)</button>
+          </div>
         </div>
       
-    
         <div class="custom-button-box">
-        <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">
-          FORMS DEVOLUÇÕES DE MATERIAL E SUCATA
-        </h2>
+          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS RECEBIMENTO EPI/EPC</h2>
+          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">INICIAR FORMULÁRIO</button>
+        </div>
 
-        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">
-          MANUTENÇÃO PREVENTIVA
-        </button>
+        <div class="custom-button-box">
+          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS DEVOLUÇÕES DE MATERIAL E SUCATA</h2>
+          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">MANUTENÇÃO PREVENTIVA</button>
+          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">MANUTENÇÃO EMERGÊNCIA</button>
+        </div>
 
-        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">
-          MANUTENÇÃO EMERGÊNCIA
-        </button>
-      </div>
-      <br>
-      <br>
-       
-      
-      <div class="custom-button-box">
-          <h2 style="text-align: center; color: #ef852a; margin-top: 0px; margin-bottom: 0px;"> INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
-
+        <div class="custom-button-box">
+          <h2 style="text-align: center; color: #ef852a; margin-top: 0px; margin-bottom: 0px;">INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
           <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_jacarecanga')">JACARECANGA</button>
-        
           <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_maracanau')">MARACANAU</button>
-        
-        <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">MESSEJANA </button>
+          <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">MESSEJANA</button>
         </div>
 
 
@@ -1129,10 +1112,9 @@
           window.history.pushState(null, null, window.location.href);
       });
       // Abre links de serviço sem tocar no contador
-        function openService(nameOrUrl, urlOptional) {
-          let finalUrl = (urlOptional !== undefined) ? urlOptional : nameOrUrl;
-          if (typeof finalUrl === 'string' && finalUrl.startsWith('http')) {
-            window.open(finalUrl, '_blank');
+       function openService(url) {
+          if (typeof url === 'string' && url.startsWith('http')) {
+            window.open(url, '_blank');
           } else {
             alert("URL inválida.");
           }
