@@ -178,7 +178,7 @@
       /* Estilo para os selects de equipe */
       select.select-team {
          width: 100%;
-         padding: 7px;
+         padding: 8px;
          margin: 4px 0;
          font-size: 14px;
          border: 1px solid #ddd;
@@ -217,17 +217,7 @@
           margin-bottom: 12px;
         }
 
-        /* Botões de serviço (sempre ativos) */
-        .service-button {
-          border: none;
-          padding: 10px 16px;
-          margin: 6px;
-          background-color: #0d3d8b;
-          color: #fff;
-          cursor: pointer;
-          border-radius: 6px;
-          transition: transform .15s;
-        }
+        
         .service-button:hover {
           transform: scale(1.03);
         }
@@ -245,16 +235,28 @@
         .service-highlight {
           border: -6px solid #1a73e8;       /* cor do contorno */
           background-color: #e8f0fe;       /* fundo suave */
-          padding: 17px 16px;              /* espaçamento interno */
+          padding: 17px 8px;              /* espaçamento interno */
           border-radius: 8px;              /* cantos arredondados */
           text-align: center;              /* centraliza o link */
           margin: 16px 0;                  /* espaçamento externo */
         }
 
-        /* Ajuste extra no botão dentro da caixa */
-        .service-highlight .service-button {
-          font-size: 1.1rem;               /* texto um pouco maior */
-          padding: 12px 24px;              /* botão levemente maior */
+                button .icon,
+        a      .icon {
+          display: block;          /* força o texto vir em outra linha              */
+          font-size: 2.4rem;       /* tamanho do emoji/ícone – ajuste à vontade     */
+          line-height: 1;
+          margin: 0 auto 6px;      /* espaçamento abaixo do ícone                   */
+        }
+
+        /* Centraliza o conteúdo do botão (ícone + texto) */
+        .service-button,
+        .service-button-green,
+        .custom-rounded-button,
+        .custom-check-button,
+        .highlight-button {
+          text-align: center;
+          padding: 18px 12px;      /* mais “respiro” para caber ícone grande        */
         }
       /* Botão personalizado para “Outros Serviços” */
         #other-services .service-button-green {
@@ -280,31 +282,7 @@
           width: calc(33% - 20px);
         }
 
-        /* Efeito no hover/focus */
-        #other-services .service-button-green:hover,
-        #other-services .service-button-green:focus {
-          background: var(--other-btn-hover);
-          transform: translateY(-3px);
-          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-        }
-
-        /* Responsivo: 2 colunas abaixo de 800px */
-        @media (max-width: 800px) {
-          #other-services .service-button-green {
-            width: calc(50% - 20px);
-          }
-        }
-        /* Responsivo: 1 coluna abaixo de 500px */
-        @media (max-width: 500px) {
-          #other-services .service-button-green {
-            width: 100%;
-          }
-        }
-              #other-services .service-button-green .icon {
-          margin-right: 8px;
-          font-size: 1.2rem;
-        }
-                .checklist-icon {
+        .checklist-icon {
           /* 1. Tamanho do ícone */
           font-size: 1.8rem;            /* ex: 1rem, 1.5rem, 2rem… */
 
@@ -522,9 +500,9 @@
           background: #fff;
           color: #1565c0;
           border: 1px solid #1565c0;
-          padding: 10px 16px;
-          font-size: 0.95rem;
-          border-radius: 100px;
+          padding: 14px 20px;
+          font-size: 0.99rem;
+          border-radius: 17px;
           box-shadow: none;
       }
       #services-section .service-button:hover {
@@ -553,34 +531,33 @@
           text-align: center;
           margin-top: 0;
       }
+      /* OUTROS LINKS CONSULTAS – botão verde */
       #other-services .service-button-green {
-          background: #2e7d32;
-          color: #fff;
-          border: none;
-          padding: 10px 10px;
-          box-shadow: none;
-          font-size: 0.93rem;
-          border-radius: 29px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 96%;
+        background: #2e7d32;
+        color: #fff;
+        border: none;
+        padding: 12px 18px;           /* mais “respiro” */
+        border-radius: 29px;
+        width: 96%;
+        font-size: 0.93rem;
+        font-weight: 700;             /* deixa o texto em negrito */
+
+        /* ↓ centralização total */
+        display: flex;
+        flex-direction: column;       /* ícone em cima, texto embaixo */
+        align-items: center;          /* eixo horizontal */
+        justify-content: center;      /* eixo vertical */
+        gap: 6px;                     /* espaço entre ícone e texto */
+
+        text-align: center;           /* garante centralização do texto */
+        box-shadow: none;
+        transition: background 0.3s;
       }
-      #other-services .service-button-red {
-          background: #ff8500;
-          color: #fff;
-          border: none;
-          padding: 10px 10px;
-          box-shadow: none;
-          font-size: 0.93rem;
-          border-radius: 29px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 96%;
-      }
-      #other-services .service-button-green:hover {
-          background: #1b5e20;
+
+      /* opcional: aumenta e centraliza o ícone */
+      #other-services .service-button-green .icon {
+        font-size: 1.6rem;            /* tamanhos maiores → ajuste à vontade */
+        line-height: 1;
       }
       #services-section .services-grid .service-highlight {
       /* faz o elemento ocupar toda a largura do grid */
@@ -682,82 +659,153 @@
       background-color: #000000;
       transform: scale(1.03);
     }
-
-  </style>
+          button .icon,
+    a       .icon {          /* inclui links estilizados como botão            */
+      font-size: 3.7rem;     /* ajuste aqui: 1rem ≈ 16 px; 2.4rem ≈ 38 px       */
+      line-height: 1;        /* mantém o emoji/SVG centralizado verticalmente  */
+      vertical-align: middle;
+    }
+    </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <!-- Global Timer -->
-  <div id="global-clock"></div>
+      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
+            <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 3.0)</h2>
+  
+      <!-- ───────────── SERVIÇOS RH, BENEFÍCIOS e FALE CONOSCO ───────────── -->
+    <div id="services-section">
+      <h2>AUTO SERVIÇO RH ENEL</h2>
 
-  <div class="container">
-    <!-- Página 1: Dados de preenchimento e checklists -->
-    <div id="page1">
-            <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
-            <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 1.0)</h2>
-           <!-- Seção de Serviços RH -->
-           <div id="services-section">
-        <h2>ATALHOS DE SERVIÇOS RH ENEL</h2>
-        <div class="services-grid">
-          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">Emitir Contra-cheque</button>
-          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">Emitir Aviso-Férias</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/oip')">Portal RH</button>
-          <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">Forponto</button>
-          <button class="service-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">Cadastro de Atestado Médico<br>(Até 3 dias)</button>
-          <button class="service-button" onclick="openService('https://forms.office.com/e/yTpZUE9Gg4')">Formulário de Hora Extra</button>
-          <button class="service-button" onclick="openService('https://aka.ms/mfasetup')">Alterar Número Celular (SMS)</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">Open Feedback</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=d5ad46d8db7c0b0048fcf5b31d9619ab&preferredlanguage=pb')">Adesão/Alteração<br>(Plano de Saúde e Odonto)</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=2091e258dbfc0b0048fcf5b31d96194a&preferredlanguage=pb')">Inclusão<br>(Auxílio Creche/Babá)</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=decad2dcdbbc0b0048fcf5b31d961999&preferredlanguage=pb')">Adesão/Alteração<br>(Vale Refeição/Alimentação)</button>
-          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=13cec9e2db2d4b0048fcf5b31d96193d&preferredlanguage=pb')">Adesão/Alteração<br>(Vale Transporte)</button>
-          
-          <div class="service-highlight">
-            <a href="https://enel.service-now.com/me" class="service-button" target="_blank" rel="noopener noreferrer">
-              PORTAL ( ME )
-            </a>
-          </div>
+      <div class="services-grid">
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip')">
+          <span class="icon">🏢</span> Portal RH
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enel_onboarding_all_hr_cases')">
+          <span class="icon">📂</span> Minhas Solicitações RH
+        </button>
+        <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">
+          <span class="icon">💰</span> Emitir Contra-cheque
+        </button>
+        <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">
+          <span class="icon">🏖️</span> Emitir Aviso-Férias
+        </button>
+        <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">
+          <span class="icon">⏱️</span> Forponto
+        </button>
+        <button class="service-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">
+          <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3)
+        </button>
+        <button class="service-button" onclick="openService('https://forms.office.com/e/yTpZUE9Gg4')">
+          <span class="icon">⏳</span> Formulário de Hora Extra
+        </button>
+        <button class="service-button" onclick="openService('https://aka.ms/mfasetup')">
+          <span class="icon">📱</span> Alterar Nº Celular (SMS)
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">
+          <span class="icon">💬</span> Open Feedback
+        </button>
+        <button class="service-button" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">
+          <span class="icon">🧾</span> SGI – Sistema de Gestão Integrada
+        </button>
+              </div>
 
-          <div class="service-highlight">
-            <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
-              RH – Medicina Ocupacional<br>(Enviar E-mail)
-            </a>
-          </div>
+      <br><br><h2>BENEFÍCIOS (SOLICITAR/ALTERAR)</h2>
+      <div class="services-grid">
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=d5ad46d8db7c0b0048fcf5b31d9619ab&preferredlanguage=pb')">
+          <span class="icon">💊</span> Plano Saúde / Odonto
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=2091e258dbfc0b0048fcf5b31d96194a&preferredlanguage=pb')">
+          <span class="icon">👶</span> Auxílio Creche / Babá
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=decad2dcdbbc0b0048fcf5b31d961999&preferredlanguage=pb')">
+          <span class="icon">🍽️</span> Vale Refeição / Alimentação
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=13cec9e2db2d4b0048fcf5b31d96193d&preferredlanguage=pb')">
+          <span class="icon">🚌</span> Vale Transporte
+        </button>
         </div>
+
+      <br><br><h2>FALE CONOSCO</h2>
+      <div class="services-grid">
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=455fe65cdb304b0048fcf5b31d9619ab&preferredlanguage=pb')">
+          <span class="icon">❓</span> Dúvidas
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=11a4fe54db704b0048fcf5b31d96199d&preferredlanguage=pb')">
+          <span class="icon">📢</span> Reclamação
+        </button>
+        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=73b23ad0db704b0048fcf5b31d9619ef&preferredlanguage=pb')">
+          <span class="icon">💡</span> Sugestões
+        </button>
       </div>
 
-        <div id="other-services">
-          <h2>OUTROS LINKS CONSULTAS</h2>
-          <div class="services-grid">
-            <button class="service-button-green" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">SISTEMA GESTÃO INTEGRADA (SGI)</button>
-            <button class="service-button-green" onclick="openService('https://sistemas.glux.com.br/')">CONSULTA LAUDOS (GLUX)</button>
-            <button class="service-button-green" onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">LISTA DISPONÍVEIS DE (ITS)</button>
-          </div>
-        </div>
+      <div class="service-highlight">
+        <a href="https://enel.service-now.com/me" class="service-button" target="_blank">
+          <span class="icon">🌐</span> PORTAL (ME)
+        </a>
+      </div>
       
-        <div class="custom-button-box">
-          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS RECEBIMENTO EPI/EPC</h2>
-          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">INICIAR FORMULÁRIO</button>
-        </div>
       
-        <div class="custom-button-box">
-          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS CONTROLE MATERIAL</h2>
-          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUNzdKNFVYMzQ5S1dZVFAzNUFQTjFRODRSUC4u')">INICIAR FORMULÁRIO</button>
-        </div>
 
-        <div class="custom-button-box">
-          <h2 style="text-align: center; color: #0d47a1; margin-top: 0px; margin-bottom: 0px;">FORMS DEVOLUÇÕES DE MATERIAIS E SUCATAS</h2>
-          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">MANUTENÇÃO PREVENTIVA (PROGRAMADA)</button>
-          <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">MANUTENÇÃO CORRETIVA (EMERGÊNCIAL)</button>
-        </div>
+      <div class="service-highlight">
+        <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
+          <span class="icon">🩺</span> RH – Medicina Ocupacional
+        </a>
+      </div>
+    </div>
 
-        <div class="custom-button-box">
-          <h2 style="text-align: center; color: #ef852a; margin-top: 0px; margin-bottom: 0px;">INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
-          <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_jacarecanga')">JACARECANGA</button>
-          <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_maracanau')">MARACANAU</button>
-          <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">MESSEJANA</button>
-        </div>
+    <!-- ───────────── FORMULÁRIOS (EPI / MATERIAL / SUCATA) ───────────── -->
+    <div class="custom-button-box">
+      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS RECEBIMENTO EPI/EPC</h2>
+      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">
+        <span class="icon">📋</span> INICIAR FORMULÁRIO
+      </button>
+    </div>
+
+    <div class="custom-button-box">
+      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS CONTROLE MATERIAL</h2>
+      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUNzdKNFVYMzQ5S1dZVFAzNUFQTjFRODRSUC4u')">
+        <span class="icon">📋</span> INICIAR FORMULÁRIO
+      </button>
+    </div>
+
+    <div class="custom-button-box">
+      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS DEVOLUÇÕES DE MATERIAIS E SUCATAS</h2>
+      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">
+        <span class="icon">📋</span> MANUTENÇÃO PREVENTIVA (PROGRAMADA)
+      </button>
+      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">
+        <span class="icon">📋</span> MANUTENÇÃO CORRETIVA (EMERGÊNCIAL)
+      </button>
+    </div>
+
+    <!-- ───────────── CHECKLIST DIÁRIO ───────────── -->
+    <div class="custom-button-box">
+      <h2 style="text-align:center;color:#ef852a;margin:0;">INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
+      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_jacarecanga')">
+        <span class="icon">🧾</span> JACARECANGA
+      </button>
+      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_maracanau')">
+        <span class="icon">🧾</span> MARACANAÚ
+      </button>
+      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">
+        <span class="icon">🧾</span> MESSEJANA
+      </button>
+    </div>
+
+  
+  <!-- ───────────── OUTROS LINKS ───────────── -->
+    <div id="custom-button-box">
+      <h2>OUTROS LINKS CONSULTAS</h2>
+      <div class="custom-button-box">
+        <button class="custom-button-box" onclick="openService('https://sistemas.glux.com.br/')">
+          <span class="icon">🧾</span> Consulta Laudos (GLUX)
+        </button>
+        <button class="custom-button-box" onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">
+          <span class="icon">📑</span> Lista Disponíveis de ITS
+        </button>
+      </div>
+    </div>
 
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Enel_Group_logo.svg" alt="Logo ENEL" style="width: 193px; height: auto; display: block; margin: 20px auto;">
