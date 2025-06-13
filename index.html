@@ -810,19 +810,43 @@
       </button>
     </div>
 
-  
-  <!-- ───────────── OUTROS LINKS ───────────── -->
-    <div id="custom-button-box">
-      <h2>OUTROS LINKS CONSULTAS</h2>
-      <div class="custom-button-box">
-        <button class="custom-button-box" onclick="openService('https://sistemas.glux.com.br/')">
-          <span class="icon">🧾</span> Consulta Laudos (GLUX)
-        </button>
-        <button class="custom-button-box" onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">
-          <span class="icon">📑</span> Lista Disponíveis de ITS
-        </button>
-      </div>
+ <!-- ───────────── OUTROS LINKS ───────────── -->
+  <div id="custom-button-box">
+    <style>
+      #custom-button-box .custom-button-box button {
+        border: 3px solid #ff0000;
+        color: #000;
+        background-color: white;
+        padding: 10px 87px;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 79px;
+        margin: 5px;
+      }
+
+      #custom-button-box .custom-button-box button:hover {
+        background-color: rgb(255, 0, 0); /* leve destaque ao passar o mouse */
+        color: white; 
+      }
+
+      #custom-button-box .icon {
+        margin-right: 6px;
+      }
+    </style>
+
+    <div class="custom-button-box">
+      <h2 style="color: red;">OUTROS LINKS CONSULTAS</h2>
+
+      <button onclick="openService('https://sistemas.glux.com.br/')">
+        <span class="icon">🧾</span> Consulta Laudos (GLUX)
+      </button>
+
+      <button onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">
+        <span class="icon">📑</span> Lista Disponíveis de ITS
+      </button>
     </div>
+  </div>
+
 
 
   <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Enel_Group_logo.svg" alt="Logo ENEL" style="width: 193px; height: auto; display: block; margin: 20px auto;">
