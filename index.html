@@ -701,6 +701,34 @@
     padding: 10px 20px;
     cursor: pointer;
   }
+
+  .callback-button {
+  display: inline-block;
+  background-color: black;       /* fundo preto */
+  color: white;      /* texto E ícone brancos */
+  padding: 12px 87px;
+  font-size: 18px;
+  text-decoration: none;
+  border: 2px solid white;
+  border-radius: 89px;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  }
+
+  .callback-button .icon {
+  margin-right: 10px;
+  color: white; /* Ícone branco */
+  }
+
+  .callback-button:hover {
+  background-color: white;
+  color: black;      /* texto preto */
+  border-color: black;
+  }
+
+  .callback-button:hover .icon {
+  color: black; /* Ícone preto no hover */
+  }  
     </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -710,36 +738,6 @@
             <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 3.0)</h2>
 
       <div class="service-highlight">
-        <style>
-          .callback-button {
-            display: inline-block;
-            background-color: black;       /* fundo preto */
-            color: white;                  /* texto E ícone brancos */
-            padding: 12px 87px;
-            font-size: 18px;
-            text-decoration: none;
-            border: 2px solid white;
-            border-radius: 89px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-          }
-
-          .callback-button .icon {
-            margin-right: 10px;
-            color: white; /* Ícone branco */
-          }
-
-          .callback-button:hover {
-            background-color: white;
-            color: black;                  /* texto preto */
-            border-color: black;
-          }
-
-          .callback-button:hover .icon {
-            color: black; /* Ícone preto no hover */
-          }
-        </style>
-
         <a href="https://modelospadrao.github.io/callbackenel/" class="callback-button" target="_blank">
           <i class="fas fa-phone icon"></i> INICIAR CALLBACK COM CLIENTES
         </a>
@@ -794,7 +792,7 @@
               </span>
           </span>
         </p>
-          <button onclick="fecharPopup()">Entendi</button>
+          <button onclick="fecharPopup()"><strong>Clique aqui se deseja:</strong><br>Prosseguir com formulário do Atestado Médico.</button>
         </div>
         <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
           <span class="icon">⏳</span> Formulário de Hora Extra
