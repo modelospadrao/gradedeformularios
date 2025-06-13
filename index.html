@@ -668,68 +668,38 @@
       line-height: 1;        /* mantém o emoji/SVG centralizado verticalmente  */
       vertical-align: middle;
     }
-    /* Popup único para callback */
-  #custom-callback-popup {
-    display: none; 
+      /* Overlay: cobre a tela toda e fica por trás do popup */
+  #popup-overlay {
+    display: none;
     position: fixed;
-    top: 50%; 
-    left: 50%;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1099;
+  }
+
+  /* Popup centralizado, fixo na tela, sem ocupar espaço no layout */
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    padding: 20px; 
     background-color: rgba(0,0,0,0.8);
-    color: white; 
-    font-size: 16px; 
-    border-radius: 5px;
-    z-index: 1100; 
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    text-align: left;
-    max-width: 400px;
-  }
-
-      #popup {
-      display: none;
-      position: fixed;
-      top: 50%; 
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      background-color: rgba(0,0,0,0.8);
-      color: white;
-      font-size: 16px;
-      border-radius: 5px;
-      z-index: 1100;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      text-align: left;  /* Alinha o texto dentro do popup à esquerda */
-      max-width: 400px;
-    }
-
-  /* Botão fechar */
-  #custom-callback-popup button {
-    margin-top: 15px;
-    padding: 8px 15px;
-    border: none;
-    background-color: #e60000;
     color: white;
-    font-weight: bold;
+    padding: 20px;
     border-radius: 5px;
-    cursor: pointer;
+    max-width: 400px;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    z-index: 1100;
+    text-align: left;
   }
 
-  /* Botão principal estilo só pra ele */
-  #custom-callback-button {
-    padding: 12px 30px;
-    font-size: 18px;
-    border-radius: 50px;
-    border: 2px solid #e60000;
-    background-color: white;
-    color: #e60000;
+  /* Botão dentro do popup */
+  #popup button {
+    margin-top: 20px;
+    padding: 10px 20px;
     cursor: pointer;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-  }
-  #custom-callback-button .icon {
-    margin-right: 8px;
   }
     </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
@@ -800,40 +770,26 @@
           <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3 dias)
         </button>
 
-        <div id="popup-overlay" class="popup-overlay"></div>
+        <div id="popup-overlay"></div>
 
-        <div id="popup" class="popup">
-          <p style="text-align: left; font-size: 16px; color: white; max-width: 400px;">
-          ⚠️ <strong>Atenção!</strong><br><br>
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 24px;">📝</span>
-            <span>O formulário é exclusivo para os casos de atestados de <strong>1 a 3 dias</strong>.</span>
-          </span><br>
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 24px;">📧</span>
-            <span>Atestados de <strong>4 a 14 dias</strong> devem ser enviados apenas por e-mail.</span>
-          </span><br>
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 24px;">🏥</span>
-            <span>Atestados com mais de <strong>15 dias</strong> devem ser tratados com afastamento INSS.</span>
-          </span>
-        </p>
+        <div id="popup">
+          <p>
+            ⚠️ <strong>Atenção!</strong><br><br>
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 24px;">📝</span>
+              <span>O formulário é exclusivo para os casos de atestados de <strong>1 a 3 dias</strong>.</span>
+            </span><br>
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 24px;">📧</span>
+              <span>Atestados de <strong>4 a 14 dias</strong> devem ser enviados apenas por e-mail.</span>
+            </span><br>
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 24px;">🏥</span>
+              <span>Atestados com mais de <strong>15 dias</strong> devem ser tratados com afastamento INSS.</span>
+            </span>
+          </p>
           <button onclick="fecharPopup()">Entendi</button>
         </div>
-
-        <script>
-          function abrirPopup() {
-            document.getElementById('popup').style.display = 'block';
-            document.getElementById('popup-overlay').style.display = 'block';
-          }
-
-          function fecharPopup() {
-            document.getElementById('popup').style.display = 'none';
-            document.getElementById('popup-overlay').style.display = 'none';
-            // Abre o link após fechar o popup
-            window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
-          }
-        </script>
         <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
           <span class="icon">⏳</span> Formulário de Hora Extra
         </button>
@@ -1439,6 +1395,15 @@
       }
 
       window.addEventListener('load', loadExternalData);
+     function abrirPopup() {
+        document.getElementById('popup-overlay').style.display = 'block';
+        document.getElementById('popup').style.display = 'block';
+      }
+      function fecharPopup() {
+        document.getElementById('popup-overlay').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
+        window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
+      }
   </script>
 </body>
 </html>
