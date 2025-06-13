@@ -794,6 +794,10 @@
           <button onclick="fecharPopup()" style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
             <strong>Clique aqui se deseja:</strong><br>Prosseguir com preenchimento deste formulário.
           </button>
+           <!-- Botão só para fechar -->
+          <button onclick="fecharSomentePopup()" style="margin-top: 10px; background-color: gray; color: white; padding: 8px 16px; border: none; border-radius: 8px; cursor: pointer;">
+            Fechar
+          </button>
         </div>
         <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
           <span class="icon">⏳</span> Formulário de Hora Extra
@@ -1408,6 +1412,10 @@
         document.getElementById('popup-overlay').style.display = 'none';
         document.getElementById('popup').style.display = 'none';
         window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
+      }
+          function fecharSomentePopup() {
+        document.getElementById('popup-overlay').style.display = 'none';
+        document.getElementById('popup').style.display = 'none';
       }
   </script>
 </body>
