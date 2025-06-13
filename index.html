@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Adicione isso no <head> da sua página uma vez -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <title>ATALHOS PARA LINKS/ENEL CE</title>
   <style>
@@ -668,6 +668,69 @@
       line-height: 1;        /* mantém o emoji/SVG centralizado verticalmente  */
       vertical-align: middle;
     }
+    /* Popup único para callback */
+  #custom-callback-popup {
+    display: none; 
+    position: fixed;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px; 
+    background-color: rgba(0,0,0,0.8);
+    color: white; 
+    font-size: 16px; 
+    border-radius: 5px;
+    z-index: 1100; 
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    text-align: left;
+    max-width: 400px;
+  }
+
+      #popup {
+      display: none;
+      position: fixed;
+      top: 50%; 
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: rgba(0,0,0,0.8);
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      z-index: 1100;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      text-align: left;  /* Alinha o texto dentro do popup à esquerda */
+      max-width: 400px;
+    }
+
+  /* Botão fechar */
+  #custom-callback-popup button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    border: none;
+    background-color: #e60000;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Botão principal estilo só pra ele */
+  #custom-callback-button {
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 50px;
+    border: 2px solid #e60000;
+    background-color: white;
+    color: #e60000;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+  }
+  #custom-callback-button .icon {
+    margin-right: 8px;
+  }
     </style>
   <!-- Biblioteca html2pdf para gerar o PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
@@ -733,9 +796,44 @@
         <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">
           <span class="icon">⏱️</span> Forponto
         </button>
-        <button class="service-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u')">
-          <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3)
+        <button class="service-button" onclick="abrirPopup()">
+          <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3 dias)
         </button>
+
+        <div id="popup-overlay" class="popup-overlay"></div>
+
+        <div id="popup" class="popup">
+          <p style="text-align: left; font-size: 16px; color: white; max-width: 400px;">
+          ⚠️ <strong>Atenção!</strong><br><br>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 24px;">📝</span>
+            <span>O formulário é exclusivo para os casos de atestados de <strong>1 a 3 dias</strong>.</span>
+          </span><br>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 24px;">📧</span>
+            <span>Atestados de <strong>4 a 14 dias</strong> devem ser enviados apenas por e-mail.</span>
+          </span><br>
+          <span style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 24px;">🏥</span>
+            <span>Atestados com mais de <strong>15 dias</strong> devem ser tratados com afastamento INSS.</span>
+          </span>
+        </p>
+          <button onclick="fecharPopup()">Entendi</button>
+        </div>
+
+        <script>
+          function abrirPopup() {
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('popup-overlay').style.display = 'block';
+          }
+
+          function fecharPopup() {
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('popup-overlay').style.display = 'none';
+            // Abre o link após fechar o popup
+            window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
+          }
+        </script>
         <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
           <span class="icon">⏳</span> Formulário de Hora Extra
         </button>
