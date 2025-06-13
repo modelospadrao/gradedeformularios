@@ -1,1353 +1,1338 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Adicione isso no <head> da sua página uma vez -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!DOCTYPE html>
+  <html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Adicione isso no <head> da sua página uma vez -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <title>ATALHOS PARA LINKS/ENEL CE</title>
-  <style>
-      /* Estilos gerais e aprimoramento dos botões */
-      body { 
-          font-family: Cambria, Cochin, Georgia, Times, sans-serif; 
-          background-color: #f0f0f0; 
-          padding: 3px;
-      }
-      .container { 
-          width: 95%; 
-          margin: auto; 
-      }
-      /* Página 1 e Página 2 */
-      #page1, #page2 {
-          background: #fff;
-          padding: 20px;
-          margin-top: -36px;
-      }
-      /* Estilos da árvore de checklists */
-      .tree { 
-          display: flex; 
-          flex-direction: column; 
-          align-items: center; 
-      }
-      .branch { 
-          display: flex; 
-          justify-content: center; 
-          align-items: center; 
-          flex-wrap: wrap; 
-          margin: 20px 0; 
-      }
-      .button-default {
-          border: none;
-          border: 1px solid #141414;
-          padding: 12px 20px;
-          margin: 10px;
-          background-color: #fff;
-          cursor: pointer;
-          font-size: 16px;
-          border-radius: 8px;
-          box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .button-default:hover {
-          transform: scale(1.02);
-          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-      }
-      .button-default:active {
-          transform: scale(0.98);
-      }
-      .active-button { 
-          background-color: #dcdcdc; 
-      }
-      .completed-button {
-          background-color: #e0ffe0;
-          border: 2px solid #2ecc71;
-      }
-      .active-checklist-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-left: 10px;
-      }
-      .timer-display { 
-          margin-bottom: 5px; 
-          font-size: 14px; 
-          color: #333; 
-      }
-      .connection-line {
-          width: 100%;
-          height: 2px;
-          background-color: black;
-          margin-top: 5px;
-      }
-      /* Popups */
-      #popup, #error-popup, #checklist-popup, #pdf-popup {
-          display: none;
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          padding: 20px;
-          background-color: rgba(0, 0, 0, 0.8);
-          color: white;
-          font-size: 16px;
-          border-radius: 5px;
-          z-index: 1000;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-          text-align: center;
-      }
-      .popup-buttons {
-          display: flex;
-          justify-content: space-around;
-          margin-top: 10px;
-      }
-      .popup-buttons button {
-          padding: 8px 16px;
-          font-size: 14px;
-          border-radius: 4px;
-          cursor: pointer;
-          border: none;
-      }
-      .yes-button {
-          background-color: #4CAF50;
-          color: white;
-      }
-      .no-button {
-          background-color: #f44336;
-          color: white;
-      }
-      /* Caixa de Preview e Observação */
-      #preview-box {
-          border: 1px solid #ddd;
-          padding: 10px;
-          margin-top: -5px;
-          background-color: #f0f0f0;
-          font-family: monospace;
-          font-size: 14px;
-          box-sizing: border-box;
-          white-space: pre-wrap;
-          word-break: break-all;
-          overflow-x: hidden;
-          box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-      }
-      /* Botões de ação */
-      #button-container {
-          margin-top: 20px;
-          text-align: center;
-      }
-      .button-action {
-          background-color: #00b145;
-          color: white;
-          padding: 8px 16px;
-          margin: 5px;
-          cursor: pointer;
-          font-size: 14px;
-          border-radius: 4px;
-          transition: all 0.3s ease;
-          box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-          border: none;
-      }
-      .disabled-btn {
-          background-color: #e0e0e0;
-          cursor: not-allowed;
-      }
-      /* Global clock e botão de reinicialização */
-      #global-clock {
-          position: fixed;
-          top: 10px;
-          left: 10px;
-          font-size: 24px;
-          font-family: 'Courier New', Courier, monospace;
-          color: #fff;
-          background-color: #000;
-          padding: 10px;
-          border-radius: 8px;
-          z-index: 1001;
-          display: none;
-      }
-      #reset-button {
-          top: 799px;
-          right: 48px;
-          font-size: 14px;
-          padding: 7px 32px;
-          border-radius: 23px;
-          background-color: #f44336;
-          color: white;
-          border: none;
-          cursor: pointer;
-          box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-          z-index: 1002;
-      }
-      /* Estilo para os selects de equipe */
-      select.select-team {
-         width: 100%;
-         padding: 8px;
-         margin: 4px 0;
-         font-size: 14px;
-         border: 1px solid #ddd;
-         text-transform: uppercase;
-         background-color: rgba(0, 0, 0, 0.8);
-         color: white;
-         border-radius: 5px;
-      }
-      .active-checklist-container .button-default {
-          background-color: #000000;
-          border: 2px solid #000000;
-          color: #ffffff;
-          padding: 12px 20px;
-          margin: 10px;
-          border-radius: 8px;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-      }
-     /* Bloqueia o pull-to-refresh no Chrome mobile */
-      html, body {
-          overscroll-behavior-y: none;
-      }
-      /* Container das seções */
-        #services-section, #checklist-section {
-          background: #fff;
-          padding: 20px;
-          margin-top: 20px;
-          border-radius: 8px;
+    <title>ATALHOS PARA LINKS/ENEL CE</title>
+    <style>
+        /* Estilos gerais e aprimoramento dos botões */
+        body { 
+            font-family: Cambria, Cochin, Georgia, Times, sans-serif; 
+            background-color: #f0f0f0; 
+            padding: 3px;
         }
-
-        /* Títulos */
-        #services-section h2,
-        #checklist-section h2 {
-          text-align: center;
-          font-size: 1.3rem;
-          color: #1a73e8;
-          margin-bottom: 12px;
+        .container { 
+            width: 95%; 
+            margin: auto; 
         }
-
-        
-        .service-button:hover {
-          transform: scale(1.03);
+        /* Página 1 e Página 2 */
+        #page1, #page2 {
+            background: #fff;
+            padding: 20px;
+            margin-top: -36px;
         }
-
-        /* Certifique-se de que seus botões de checklist têm esta classe */
-        .checklist-button {
-          /* herda seu estilo atual */
+        /* Estilos da árvore de checklists */
+        .tree { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
         }
-        /* Desabilitar apenas para checklist */
-        .disabled {
-          opacity: 0.5;
-          pointer-events: none;
+        .branch { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            margin: 20px 0; 
         }
-      /* Caixa maior para destacar o link do RH */
-        .service-highlight {
-          border: -6px solid #1a73e8;       /* cor do contorno */
-          background-color: #e8f0fe;       /* fundo suave */
-          padding: 17px 8px;              /* espaçamento interno */
-          border-radius: 8px;              /* cantos arredondados */
-          text-align: center;              /* centraliza o link */
-          margin: 16px 0;                  /* espaçamento externo */
+        .button-default {
+            border: none;
+            border: 1px solid #141414;
+            padding: 12px 20px;
+            margin: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-
-                button .icon,
-        a      .icon {
-          display: block;          /* força o texto vir em outra linha              */
-          font-size: 2.4rem;       /* tamanho do emoji/ícone – ajuste à vontade     */
-          line-height: 1;
-          margin: 0 auto 6px;      /* espaçamento abaixo do ícone                   */
+        .button-default:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-
-        /* Centraliza o conteúdo do botão (ícone + texto) */
-        .service-button,
-        .service-button-green,
-        .custom-rounded-button,
-        .custom-check-button,
-        .highlight-button {
-          text-align: center;
-          padding: 18px 12px;      /* mais “respiro” para caber ícone grande        */
+        .button-default:active {
+            transform: scale(0.98);
         }
-      /* Botão personalizado para “Outros Serviços” */
-        #other-services .service-button-green {
-          /* borda mais espessa e escura */
-          border: 1px solid #333;        /* ajuste o código de cor se quiser outro tom */
-          /* mantém o degradê de fundo */
-          background: linear-gradient(135deg, var(--other-btn-start), var(--other-btn-end));
-          border-radius: 12px;
-          padding: 14px 28px;
-          margin: 10px;
-          font-size: 1rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          color: #f50101;
-          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-          transition:
-            background 0.3s ease,
-            transform 0.2s ease,
-            box-shadow 0.2s ease;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: calc(33% - 20px);
+        .active-button { 
+            background-color: #dcdcdc; 
         }
-
-        .checklist-icon {
-          /* 1. Tamanho do ícone */
-          font-size: 1.8rem;            /* ex: 1rem, 1.5rem, 2rem… */
-
-          /* 2. Cor (se for um ícone de fonte) */
-          color: #333333;               /* ex: #000, #e63946… */
-
-          /* 3. Espaçamento */
-          margin-top:    0;             /* margem superior */
-          margin-right:  0.1em;         /* margem direita */
-          margin-bottom: 0;             /* margem inferior */
-          margin-left:   0;             /* margem esquerda */
-
-          /* 4. Posicionamento relativo */
-          position: relative;           /* permite usar top/left */
-          top:    0;                    /* move pra baixo (+) ou pra cima (–) */
-          left:   0;                    /* move pra direita (+) ou pra esquerda (–) */
-
-          /* 5. Transformações */
-          transform: 
-            translate(0, 0)             /* desloca x, y */
-            rotate(0deg)                /* rotaciona */
-            scale(1);                   /* escala */
-
-          /* 6. Filtros e efeitos visuais */
-          filter: 
-            brightness(1)               /* 0.5 escuro – 1 normal – 1.5 claro */
-            contrast(1)                 /* 0 sem contraste – 1 normal */
-            grayscale(0)                /* 0 colorido – 1 totalmente cinza */
-            hue-rotate(0deg)            /* roda matiz */
-            invert(0);                  /* 0 normal – 1 invertido */
-
-          /* 7. Sombra (se quiser destacar) */
-          text-shadow: 
-            1px 1px 2px rgba(0,0,0,0.3),  /* sombra leve */
-            0 0 4px rgba(255,255,255,0.5); /* brilho */
-
-          /* 8. Transições para animações suaves */
-          transition: 
-            font-size 0.2s ease, 
-            color 0.2s ease, 
-            transform 0.2s ease, 
-            filter 0.2s ease;
-
-          /* 9. Cursor e seleção */
-          cursor: default;             /* pointer, text, etc */
-          user-select: none;           /* evita seleção do emoji */
-
-          /* 10. Exemplo de background-image (caso queira usar SVG ou PNG em vez de emoji) */
-          /* background-image: url('icone.svg');
-             background-size: contain;
-             background-repeat: no-repeat;
-             display: inline-block;
-             width: 1.8rem;
-             height: 1.8rem;
-             text-indent: -9999px; */
+        .completed-button {
+            background-color: #e0ffe0;
+            border: 2px solid #2ecc71;
         }
-      /* Container geral da seção */
-        #checklist-section {
-          background: #fff;
-          border: 3px solid #ff0000;
-          border-radius: 7px;
-          padding: 14px;
-          margin: 29px 0;
-        }
-
-        /* Título centralizado */
-        #checklist-section h2 {
-          text-align: center;
-          font-size: 1.4rem;
-          color: #e63946;
-          margin-bottom: 16px;
-          border-bottom: 0px solid #e63946;
-          padding-bottom: 7px;
-        }
-
-        /* Lista de itens */
-        .checklist-list {
-          display: flex;
-          flex-direction: column;
-          gap: 28px;               /* espaço entre itens */
-        }
-
-        /* Cada item numa caixinha */
-        .checklist-item {
-          background: #f9f9f9;
-          border: 1px solid #ddd;
-          border-left: 8px solid #ff0000;  /* indicador colorido */
-          border-radius: 10px;
-          box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-          padding: 16px;
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;           /* permite quebra */
-        }
-
-        /* Botão ocupa todo o item sem padrões extras */
-        .checklist-item .button-default {
-          background: none;
-          border: none;
-          box-shadow: none;
-          padding: 0px 10px 16px;
-          margin: 0;
-          font-size: 1rem;
-          text-align: left;
-          width: 100%;
-          cursor: pointer;
-        }
-
-        /* Hover no item inteiro */
-        .checklist-item:hover {
-          background: #fff5f5;
-        }
-        /* === Ajustes para o botão “Encerrar Checklist” === */
         .active-checklist-container {
-          display: flex !important;
-          flex-direction: column;
-          align-items: flex-start;
-          margin-top: 8px;            /* espaço entre o item e o botão */
-          gap: 6px;                   /* espaço entre timer e botão */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 10px;
         }
-
-        /* Botão dentro da active-checklist-container */
+        .timer-display { 
+            margin-bottom: 5px; 
+            font-size: 14px; 
+            color: #333; 
+        }
+        .connection-line {
+            width: 100%;
+            height: 2px;
+            background-color: black;
+            margin-top: 5px;
+        }
+        /* Popups */
+        #popup, #error-popup, #checklist-popup, #pdf-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        .popup-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .popup-buttons button {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+        }
+        .yes-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .no-button {
+            background-color: #f44336;
+            color: white;
+        }
+        /* Caixa de Preview e Observação */
+        #preview-box {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-top: -5px;
+            background-color: #f0f0f0;
+            font-family: monospace;
+            font-size: 14px;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            word-break: break-all;
+            overflow-x: hidden;
+            box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+        }
+        /* Botões de ação */
+        #button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .button-action {
+            background-color: #00b145;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+            border: none;
+        }
+        .disabled-btn {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+        /* Global clock e botão de reinicialização */
+        #global-clock {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+            background-color: #000;
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 1001;
+            display: none;
+        }
+        #reset-button {
+            top: 799px;
+            right: 48px;
+            font-size: 14px;
+            padding: 7px 32px;
+            border-radius: 23px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+            z-index: 1002;
+        }
+        /* Estilo para os selects de equipe */
+        select.select-team {
+           width: 100%;
+           padding: 8px;
+           margin: 4px 0;
+           font-size: 14px;
+           border: 1px solid #ddd;
+           text-transform: uppercase;
+           background-color: rgba(0, 0, 0, 0.8);
+           color: white;
+           border-radius: 5px;
+        }
         .active-checklist-container .button-default {
-          display: inline-block !important;
-          background-color: #000 !important;
-          color: #ffffff !important;
-          border: 0px solid #000 !important;
-          padding: 3px 25px !important;
-          border-radius: 6px !important;
-          font-size: 0.88rem !important;
-          box-shadow: none !important;
-          width: auto !important;     /* não expande na largura */
-          cursor: pointer;
+            background-color: #000000;
+            border: 2px solid #000000;
+            color: #ffffff;
+            padding: 12px 20px;
+            margin: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
+       /* Bloqueia o pull-to-refresh no Chrome mobile */
+        html, body {
+            overscroll-behavior-y: none;
+        }
+        /* Container das seções */
+          #services-section, #checklist-section {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+          }
 
-        /* Hover no botão de encerrar */
-        .active-checklist-container .button-default:hover {
-          background-color: #f5b041 !important;
-          color: #000 !important;
-          transform: scale(1.02) !important;
+          /* Títulos */
+          #services-section h2,
+          #checklist-section h2 {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #1a73e8;
+            margin-bottom: 12px;
+          }
+
+
+          .service-button:hover {
+            transform: scale(1.03);
+          }
+
+          /* Certifique-se de que seus botões de checklist têm esta classe */
+          .checklist-button {
+            /* herda seu estilo atual */
+          }
+          /* Desabilitar apenas para checklist */
+          .disabled {
+            opacity: 0.5;
+            pointer-events: none;
+          }
+        /* Caixa maior para destacar o link do RH */
+          .service-highlight {
+            border: -6px solid #1a73e8;       /* cor do contorno */
+            background-color: #e8f0fe;       /* fundo suave */
+            padding: 17px 8px;              /* espaçamento interno */
+            border-radius: 8px;              /* cantos arredondados */
+            text-align: center;              /* centraliza o link */
+            margin: 16px 0;                  /* espaçamento externo */
+          }
+
+                  button .icon,
+          a      .icon {
+            display: block;          /* força o texto vir em outra linha              */
+            font-size: 2.4rem;       /* tamanho do emoji/ícone – ajuste à vontade     */
+            line-height: 1;
+            margin: 0 auto 6px;      /* espaçamento abaixo do ícone                   */
+          }
+
+          /* Centraliza o conteúdo do botão (ícone + texto) */
+          .service-button,
+          .service-button-green,
+          .custom-rounded-button,
+          .custom-check-button,
+          .highlight-button {
+            text-align: center;
+            padding: 18px 12px;      /* mais “respiro” para caber ícone grande        */
+          }
+        /* Botão personalizado para “Outros Serviços” */
+          #other-services .service-button-green {
+            /* borda mais espessa e escura */
+            border: 1px solid #333;        /* ajuste o código de cor se quiser outro tom */
+            /* mantém o degradê de fundo */
+            background: linear-gradient(135deg, var(--other-btn-start), var(--other-btn-end));
+            border-radius: 12px;
+            padding: 14px 28px;
+            margin: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #f50101;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition:
+              background 0.3s ease,
+              transform 0.2s ease,
+              box-shadow 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: calc(33% - 20px);
+          }
+
+          .checklist-icon {
+            /* 1. Tamanho do ícone */
+            font-size: 1.8rem;            /* ex: 1rem, 1.5rem, 2rem… */
+
+            /* 2. Cor (se for um ícone de fonte) */
+            color: #333333;               /* ex: #000, #e63946… */
+
+            /* 3. Espaçamento */
+            margin-top:    0;             /* margem superior */
+            margin-right:  0.1em;         /* margem direita */
+            margin-bottom: 0;             /* margem inferior */
+            margin-left:   0;             /* margem esquerda */
+
+            /* 4. Posicionamento relativo */
+            position: relative;           /* permite usar top/left */
+            top:    0;                    /* move pra baixo (+) ou pra cima (–) */
+            left:   0;                    /* move pra direita (+) ou pra esquerda (–) */
+
+            /* 5. Transformações */
+            transform: 
+              translate(0, 0)             /* desloca x, y */
+              rotate(0deg)                /* rotaciona */
+              scale(1);                   /* escala */
+
+            /* 6. Filtros e efeitos visuais */
+            filter: 
+              brightness(1)               /* 0.5 escuro – 1 normal – 1.5 claro */
+              contrast(1)                 /* 0 sem contraste – 1 normal */
+              grayscale(0)                /* 0 colorido – 1 totalmente cinza */
+              hue-rotate(0deg)            /* roda matiz */
+              invert(0);                  /* 0 normal – 1 invertido */
+
+            /* 7. Sombra (se quiser destacar) */
+            text-shadow: 
+              1px 1px 2px rgba(0,0,0,0.3),  /* sombra leve */
+              0 0 4px rgba(255,255,255,0.5); /* brilho */
+
+            /* 8. Transições para animações suaves */
+            transition: 
+              font-size 0.2s ease, 
+              color 0.2s ease, 
+              transform 0.2s ease, 
+              filter 0.2s ease;
+
+            /* 9. Cursor e seleção */
+            cursor: default;             /* pointer, text, etc */
+            user-select: none;           /* evita seleção do emoji */
+
+            /* 10. Exemplo de background-image (caso queira usar SVG ou PNG em vez de emoji) */
+            /* background-image: url('icone.svg');
+               background-size: contain;
+               background-repeat: no-repeat;
+               display: inline-block;
+               width: 1.8rem;
+               height: 1.8rem;
+               text-indent: -9999px; */
+          }
+        /* Container geral da seção */
+          #checklist-section {
+            background: #fff;
+            border: 3px solid #ff0000;
+            border-radius: 7px;
+            padding: 14px;
+            margin: 29px 0;
+          }
+
+          /* Título centralizado */
+          #checklist-section h2 {
+            text-align: center;
+            font-size: 1.4rem;
+            color: #e63946;
+            margin-bottom: 16px;
+            border-bottom: 0px solid #e63946;
+            padding-bottom: 7px;
+          }
+
+          /* Lista de itens */
+          .checklist-list {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;               /* espaço entre itens */
+          }
+
+          /* Cada item numa caixinha */
+          .checklist-item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-left: 8px solid #ff0000;  /* indicador colorido */
+            border-radius: 10px;
+            box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;           /* permite quebra */
+          }
+
+          /* Botão ocupa todo o item sem padrões extras */
+          .checklist-item .button-default {
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0px 10px 16px;
+            margin: 0;
+            font-size: 1rem;
+            text-align: left;
+            width: 100%;
+            cursor: pointer;
+          }
+
+          /* Hover no item inteiro */
+          .checklist-item:hover {
+            background: #fff5f5;
+          }
+          /* === Ajustes para o botão “Encerrar Checklist” === */
+          .active-checklist-container {
+            display: flex !important;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-top: 8px;            /* espaço entre o item e o botão */
+            gap: 6px;                   /* espaço entre timer e botão */
+          }
+
+          /* Botão dentro da active-checklist-container */
+          .active-checklist-container .button-default {
+            display: inline-block !important;
+            background-color: #000 !important;
+            color: #ffffff !important;
+            border: 0px solid #000 !important;
+            padding: 3px 25px !important;
+            border-radius: 6px !important;
+            font-size: 0.88rem !important;
+            box-shadow: none !important;
+            width: auto !important;     /* não expande na largura */
+            cursor: pointer;
+          }
+
+          /* Hover no botão de encerrar */
+          .active-checklist-container .button-default:hover {
+            background-color: #f5b041 !important;
+            color: #000 !important;
+            transform: scale(1.02) !important;
+          }
+                .button-default.active-button::after {
+            content: " (Checklist iniciado)";
+            font-style: italic;
+            margin-left: 0.5em;
+            color: #fff;
+          }
+          .button-default.completed-button {
+            background-color: rgba(76, 254, 46, 0.27) !important;
+            border: 2px solid #9ad2b2 !important;
+            color: #000000 !important;
+          }
+          .button-default.completed-button::after {
+            font-style: italic;
+            margin-left: 0.5em;
+            color: #fff;
+          }
+        /* Estilos da árvore de checklists */
+        .tree { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
         }
-              .button-default.active-button::after {
-          content: " (Checklist iniciado)";
-          font-style: italic;
-          margin-left: 0.5em;
-          color: #fff;
+        .branch { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-wrap: wrap; 
+            margin: 20px 0; 
         }
-        .button-default.completed-button {
-          background-color: rgba(76, 254, 46, 0.27) !important;
-          border: 2px solid #9ad2b2 !important;
-          color: #000000 !important;
+        .button-default {
+            border: none;
+            border: 1px solid #141414;
+            padding: 12px 20px;
+            margin: 10px;
+            background-color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
-        .button-default.completed-button::after {
-          font-style: italic;
-          margin-left: 0.5em;
-          color: #fff;
+        .button-default:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
-      /* Estilos da árvore de checklists */
-      .tree { 
-          display: flex; 
-          flex-direction: column; 
-          align-items: center; 
-      }
-      .branch { 
-          display: flex; 
-          justify-content: center; 
-          align-items: center; 
-          flex-wrap: wrap; 
-          margin: 20px 0; 
-      }
-      .button-default {
-          border: none;
-          border: 1px solid #141414;
-          padding: 12px 20px;
-          margin: 10px;
-          background-color: #fff;
-          cursor: pointer;
-          font-size: 16px;
+        .button-default:active {
+            transform: scale(0.98);
+        }
+        /* ... demais estilos inalterados ... */
+
+        /* === Ajustes minimalistas para Seção RH === */
+        #services-section {
+            background: #f0f4f8;
+            border-left: 4px solid #1565c0;
+            padding: 16px;
+            margin-top: 20px;
+            border-radius: 4px;
+            border: 2px solid #1565c0;
           border-radius: 8px;
-          box-shadow: 0 10px 0px rgba(0, 0, 0, 0.1);
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .button-default:hover {
-          transform: scale(1.02);
-          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-      }
-      .button-default:active {
-          transform: scale(0.98);
-      }
-      /* ... demais estilos inalterados ... */
+        }
+        #services-section h2 {
+            font-size: 1.5rem;
+            color: #1565c0;
+            margin-bottom: 16px;
+            text-align: center;
+            margin-top: 0;
+        }
+        #services-section .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        #services-section .service-button {
+            background: #fff;
+            color: #1565c0;
+            border: 1px solid #1565c0;
+            padding: 14px 20px;
+            font-size: 0.99rem;
+            border-radius: 17px;
+            box-shadow: none;
+        }
+        #services-section .service-button:hover {
+            background: #1565c0;
+            color: #fff;
+        }
+        /* Sombra leve padrão */
+        #services-section .service-button {
+          /* outros estilos já existentes... */
+          box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
+        }
 
-      /* === Ajustes minimalistas para Seção RH === */
-      #services-section {
-          background: #f0f4f8;
-          border-left: 4px solid #1565c0;
-          padding: 16px;
-          margin-top: 20px;
-          border-radius: 4px;
-          border: 2px solid #1565c0;
-        border-radius: 8px;
-      }
-      #services-section h2 {
-          font-size: 1.5rem;
-          color: #1565c0;
-          margin-bottom: 16px;
-          text-align: center;
-          margin-top: 0;
-      }
-      #services-section .services-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 12px;
-      }
-      #services-section .service-button {
-          background: #fff;
-          color: #1565c0;
-          border: 1px solid #1565c0;
-          padding: 14px 20px;
-          font-size: 0.99rem;
-          border-radius: 17px;
-          box-shadow: none;
-      }
-      #services-section .service-button:hover {
-          background: #1565c0;
+        /* === Ajustes minimalistas para Outros Serviços === */
+        #other-services {
+            background: rgba(245, 245, 245, 0.85);
+            padding: 6px;
+            border: 2px solid #2e7d32;
+            margin-top: 26px;
+            margin-bottom: 100px;
+            border-radius: 7px;
+        }
+        #other-services h2 {
+            font-size: 1.6rem;
+            color: #2e7d32;
+            margin-bottom: 0px;
+            text-align: center;
+            margin-top: 0;
+        }
+        /* OUTROS LINKS CONSULTAS – botão verde */
+        #other-services .service-button-green {
+          background: #2e7d32;
           color: #fff;
+          border: none;
+          padding: 12px 18px;           /* mais “respiro” */
+          border-radius: 29px;
+          width: 96%;
+          font-size: 0.93rem;
+          font-weight: 700;             /* deixa o texto em negrito */
+
+          /* ↓ centralização total */
+          display: flex;
+          flex-direction: column;       /* ícone em cima, texto embaixo */
+          align-items: center;          /* eixo horizontal */
+          justify-content: center;      /* eixo vertical */
+          gap: 6px;                     /* espaço entre ícone e texto */
+
+          text-align: center;           /* garante centralização do texto */
+          box-shadow: none;
+          transition: background 0.3s;
+        }
+
+        /* opcional: aumenta e centraliza o ícone */
+        #other-services .service-button-green .icon {
+          font-size: 1.6rem;            /* tamanhos maiores → ajuste à vontade */
+          line-height: 1;
+        }
+        #services-section .services-grid .service-highlight {
+        /* faz o elemento ocupar toda a largura do grid */
+        grid-column: 1 / -1;
+        /* centraliza dentro da célula estendida */
+        justify-self: center;
+        /* espaçamento acima */
+        margin-top: 12px;
       }
-      /* Sombra leve padrão */
-      #services-section .service-button {
-        /* outros estilos já existentes... */
+        #services-section .service-highlight .service-button {
+        display: block;           /* ocupa toda a largura disponível */
+        width: 100%;              /* garante que a caixa expanda */
+        white-space: normal;      /* permite quebra de linha */
+        word-wrap: break-word;    /* quebra palavras longas */
+        box-sizing: border-box;   /* inclui padding na largura total */
+        text-align: center;       /* centraliza o texto */
+      }
+      .checklist-item {
+        position: relative;   /* cria o contexto para posicionamento absoluto */
+      }
+
+      .status-box {
+        position: absolute;   /* retira do fluxo normal */
+        bottom: 3px;          /* 8px acima da borda inferior */
+        right: 24px;         /* 12px afastado da borda direita */
+        background-color: #fff;
+        border: 1px solid #ccc;
+        color: #333;
+        padding: 4px 12px;
+        border-radius: 9px;
+        font-size: 0.69rem;
+        text-align: left;
+        /* z-index para garantir que fique sobre o botão */
+        z-index: 2;
+      }
+      .status-box .status-text {
+        font-weight: bold;
+      }
+      .status-box .time-text {
+        display: block;
+        margin-top: 3px;
+      }
+          #preview-text {
+        white-space: pre-wrap;    /* preserva \n mas também quebra linhas */
+        word-break: break-word;    /* quebra palavras longas quando necessário */
+      }
+          label[for="titlelead"] {
+          font-weight: bold !important;
+      }
+
+      .custom-button-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        margin-top: 20px;
+        background-color: #fefefe;
+        border: 2px dashed #001;
+        border-radius: 12px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .custom-rounded-button {
+        background-color: #0d47a1;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 90%;
+        max-width: 300px;
         box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
       }
 
-      /* === Ajustes minimalistas para Outros Serviços === */
-      #other-services {
-          background: rgba(245, 245, 245, 0.85);
-          padding: 6px;
-          border: 2px solid #2e7d32;
-          margin-top: 26px;
-          margin-bottom: 100px;
-          border-radius: 7px;
+      .custom-rounded-button:hover {
+        background-color: #1565c0;
+        transform: scale(1.03);
       }
-      #other-services h2 {
-          font-size: 1.6rem;
-          color: #2e7d32;
-          margin-bottom: 0px;
-          text-align: center;
-          margin-top: 0;
-      }
-      /* OUTROS LINKS CONSULTAS – botão verde */
-      #other-services .service-button-green {
-        background: #2e7d32;
+
+      .custom-check-button {
+        background-color: #ef852a;
         color: #fff;
         border: none;
-        padding: 12px 18px;           /* mais “respiro” */
-        border-radius: 29px;
-        width: 96%;
-        font-size: 0.93rem;
-        font-weight: 700;             /* deixa o texto em negrito */
-
-        /* ↓ centralização total */
-        display: flex;
-        flex-direction: column;       /* ícone em cima, texto embaixo */
-        align-items: center;          /* eixo horizontal */
-        justify-content: center;      /* eixo vertical */
-        gap: 6px;                     /* espaço entre ícone e texto */
-
-        text-align: center;           /* garante centralização do texto */
-        box-shadow: none;
-        transition: background 0.3s;
-      }
-
-      /* opcional: aumenta e centraliza o ícone */
-      #other-services .service-button-green .icon {
-        font-size: 1.6rem;            /* tamanhos maiores → ajuste à vontade */
-        line-height: 1;
-      }
-      #services-section .services-grid .service-highlight {
-      /* faz o elemento ocupar toda a largura do grid */
-      grid-column: 1 / -1;
-      /* centraliza dentro da célula estendida */
-      justify-self: center;
-      /* espaçamento acima */
-      margin-top: 12px;
-    }
-      #services-section .service-highlight .service-button {
-      display: block;           /* ocupa toda a largura disponível */
-      width: 100%;              /* garante que a caixa expanda */
-      white-space: normal;      /* permite quebra de linha */
-      word-wrap: break-word;    /* quebra palavras longas */
-      box-sizing: border-box;   /* inclui padding na largura total */
-      text-align: center;       /* centraliza o texto */
-    }
-    .checklist-item {
-      position: relative;   /* cria o contexto para posicionamento absoluto */
-    }
-
-    .status-box {
-      position: absolute;   /* retira do fluxo normal */
-      bottom: 3px;          /* 8px acima da borda inferior */
-      right: 24px;         /* 12px afastado da borda direita */
-      background-color: #fff;
-      border: 1px solid #ccc;
-      color: #333;
-      padding: 4px 12px;
-      border-radius: 9px;
-      font-size: 0.69rem;
-      text-align: left;
-      /* z-index para garantir que fique sobre o botão */
-      z-index: 2;
-    }
-    .status-box .status-text {
-      font-weight: bold;
-    }
-    .status-box .time-text {
-      display: block;
-      margin-top: 3px;
-    }
-        #preview-text {
-      white-space: pre-wrap;    /* preserva \n mas também quebra linhas */
-      word-break: break-word;    /* quebra palavras longas quando necessário */
-    }
-        label[for="titlelead"] {
-        font-weight: bold !important;
-    }
-    
-    .custom-button-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      margin-top: 20px;
-      background-color: #fefefe;
-      border: 2px dashed #001;
-      border-radius: 12px;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .custom-rounded-button {
-      background-color: #0d47a1;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 90%;
-      max-width: 300px;
-      box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-    }
-
-    .custom-rounded-button:hover {
-      background-color: #1565c0;
-      transform: scale(1.03);
-    }
-    
-    .custom-check-button {
-      background-color: #ef852a;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 90%;
-      max-width: 300px;
-      box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
-    }
-    .custom-check-button:hover {
-      background-color: #000000;
-      transform: scale(1.03);
-    }
-          button .icon,
-    a       .icon {          /* inclui links estilizados como botão            */
-      font-size: 3.7rem;     /* ajuste aqui: 1rem ≈ 16 px; 2.4rem ≈ 38 px       */
-      line-height: 1;        /* mantém o emoji/SVG centralizado verticalmente  */
-      vertical-align: middle;
-    }
-      /* Overlay: cobre a tela toda e fica por trás do popup */
-  #popup-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1099;
-  }
-
-  /* Popup centralizado, fixo na tela, sem ocupar espaço no layout */
-  #popup {
-    display: none;
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0,0,0,0.8);
-    color: white;
-    padding: 20px;
-    border-radius: 5px;
-    max-width: 400px;
-    font-size: 16px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    z-index: 1100;
-    text-align: left;
-  }
-
-  /* Botão dentro do popup */
-  #popup button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
-  }
-
-  .callback-button {
-  display: inline-block;
-  background-color: black;       /* fundo preto */
-  color: white;      /* texto E ícone brancos */
-  padding: 12px 87px;
-  font-size: 18px;
-  text-decoration: none;
-  border: 2px solid white;
-  border-radius: 89px;
-  transition: all 0.3s ease;
-  font-weight: bold;
-  }
-
-  .callback-button .icon {
-  margin-right: 10px;
-  color: white; /* Ícone branco */
-  }
-
-  .callback-button:hover {
-  background-color: white;
-  color: black;      /* texto preto */
-  border-color: black;
-  }
-
-  .callback-button:hover .icon {
-  color: black; /* Ícone preto no hover */
-  }  
-    </style>
-  <!-- Biblioteca html2pdf para gerar o PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-</head>
-<body>
-      <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
-            <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 3.0)</h2>
-
-      <div class="service-highlight">
-        <a href="https://modelospadrao.github.io/callbackenel/" class="callback-button" target="_blank">
-          <i class="fas fa-phone icon"></i> INICIAR CALLBACK COM CLIENTES
-        </a>
-      </div>
-
-  
-      <!-- ───────────── SERVIÇOS RH, BENEFÍCIOS e FALE CONOSCO ───────────── -->
-    <div id="services-section">
-      <h2>AUTO SERVIÇO RH ENEL</h2>
-
-      <div class="services-grid">
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip')">
-          <span class="icon">🏢</span> Portal RH
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enel_onboarding_all_hr_cases')">
-          <span class="icon">📂</span> Minhas Solicitações RH
-        </button>
-        <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">
-          <span class="icon">💰</span> Emitir Contra-cheque
-        </button>
-        <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">
-          <span class="icon">🏖️</span> Emitir Aviso-Férias
-        </button>
-        <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">
-          <span class="icon">⏱️</span> Forponto
-        </button>
-        <button class="service-button" onclick="abrirPopup()">
-          <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3 dias)
-        </button>
-
-        <div id="popup-overlay"></div>
-
-        <div id="popup">
-         <p style="text-align: left; font-size: 16px; color: white; max-width: 420px; line-height: 1.5;">
-          ⚠️ <strong>Atenção!</strong><br>
-          Aqui está o formulário para inclusão do seu atestado <strong>igual ou inferior a três dias</strong>, destinado a colaboradores administrativos e operacionais.<br><br>
-
-           <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 45px;">📝</span>
-            <span><strong>1 a 3 dias:</strong><br>Utilize este formulário.</span>
-          </span><br>
-
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 45px;">📧</span>
-            <span><strong>4 a 14 dias:</strong><br>Procurar (Supervisor/Gestor)<br>Não preencher o formulário.</span>
-          </span><br>
-
-          <span style="display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 45px;">🏥</span>
-            <span><strong>Acima de 15 dias:</strong><br>Para afastamentos pelo INSS, procure a equipe médica e os responsáveis pelo suporte necessário.
-              </span>
-          </span>
-        </p>
-          <button onclick="fecharPopup()" style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
-            <strong>Clique aqui se deseja:</strong><br>Prosseguir com preenchimento deste formulário.
-          </button>
-           <!-- Botão só para fechar -->
-          <button onclick="fecharSomentePopup()" 
-            style="margin-top: 28px; background-color: red; color: white; padding: 13px 16px; border: none; border-radius: 8px; cursor: pointer; display: block; margin-left: auto; margin-right: auto;">
-            Fechar
-          </button>
-        </div>
-        <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
-          <span class="icon">⏳</span> Formulário de Hora Extra
-        </button>
-        <button class="service-button" onclick="openService('https://aka.ms/mfasetup')">
-          <span class="icon">📱</span> Alterar Nº Celular (SMS)
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">
-          <span class="icon">💬</span> Open Feedback
-        </button>
-        <button class="service-button" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">
-          <span class="icon">🧾</span> SGI – Sistema de Gestão Integrada
-        </button>
-              </div>
-
-      <br><br><h2>BENEFÍCIOS (SOLICITAR/ALTERAR)</h2>
-      <div class="services-grid">
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=d5ad46d8db7c0b0048fcf5b31d9619ab&preferredlanguage=pb')">
-          <span class="icon">💊</span> Plano Saúde / Odonto
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=2091e258dbfc0b0048fcf5b31d96194a&preferredlanguage=pb')">
-          <span class="icon">👶</span> Auxílio Creche / Babá
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=decad2dcdbbc0b0048fcf5b31d961999&preferredlanguage=pb')">
-          <span class="icon">🍽️</span> Vale Refeição / Alimentação
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=13cec9e2db2d4b0048fcf5b31d96193d&preferredlanguage=pb')">
-          <span class="icon">🚌</span> Vale Transporte
-        </button>
-        
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=e434086fdb8d6bc048fcf5b31d961988&preferredlanguage=')">
-          <span class="icon">🛫</span> Gestão de Viagens
-        </button>
-        </div>
-
-      <br><br><h2>FALE CONOSCO</h2>
-      <div class="services-grid">
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=455fe65cdb304b0048fcf5b31d9619ab&preferredlanguage=pb')">
-          <span class="icon">❓</span> Dúvidas
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=11a4fe54db704b0048fcf5b31d96199d&preferredlanguage=pb')">
-          <span class="icon">📢</span> Reclamação
-        </button>
-        <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=73b23ad0db704b0048fcf5b31d9619ef&preferredlanguage=pb')">
-          <span class="icon">💡</span> Sugestões
-        </button>
-      </div>
-
-      <div class="service-highlight">
-        <a href="https://enel.service-now.com/me" class="service-button" target="_blank">
-          <span class="icon">🌐</span> PORTAL (ME)
-        </a>
-      </div>
-
-
-      <br><br><h2>ENVIAR E-MAILS</h2>
-      
-      <div class="service-highlight">
-        <a href="mailto:hr.suporte@enel.com" class="service-button">
-          <span class="icon">📩</span> HR. Suporte ENEL
-        </a>
-        
-
-      <div class="service-highlight">
-        <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
-          <span class="icon">📩</span> RH – Medicina Ocupacional
-        </a>
-      </div>
-    </div>
-
-    <!-- ───────────── FORMULÁRIOS (EPI / MATERIAL / SUCATA) ───────────── -->
-    <div class="custom-button-box">
-      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS RECEBIMENTO EPI/EPC</h2>
-      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">
-        <span class="icon">📋</span> INICIAR FORMULÁRIO
-      </button>
-    </div>
-
-    <div class="custom-button-box">
-      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS CONTROLE MATERIAL</h2>
-      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUNzdKNFVYMzQ5S1dZVFAzNUFQTjFRODRSUC4u')">
-        <span class="icon">📋</span> INICIAR FORMULÁRIO
-      </button>
-    </div>
-
-    <div class="custom-button-box">
-      <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS DEVOLUÇÕES DE MATERIAIS E SUCATAS</h2>
-      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">
-        <span class="icon">📋</span> MANUTENÇÃO PREVENTIVA (PROGRAMADA)
-      </button>
-      <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">
-        <span class="icon">📋</span> MANUTENÇÃO CORRETIVA (EMERGÊNCIAL)
-      </button>
-    </div>
-
-    <!-- ───────────── CHECKLIST DIÁRIO ───────────── -->
-    <div class="custom-button-box">
-      <h2 style="text-align:center;color:#ef852a;margin:0;">INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
-      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_jacarecanga')">
-        <span class="icon">🧾</span> JACARECANGA
-      </button>
-      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_maracanau')">
-        <span class="icon">🧾</span> MARACANAÚ
-      </button>
-      <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">
-        <span class="icon">🧾</span> MESSEJANA
-      </button>
-    </div>
-
- <!-- ───────────── OUTROS LINKS ───────────── -->
-  <div id="custom-button-box">
-    <style>
-      #custom-button-box .custom-button-box button {
-        border: 3px solid #ff0000;
-        color: #000;
-        background-color: white;
-        padding: 10px 87px;
-        font-size: 20px;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 1rem;
+        font-weight: bold;
         cursor: pointer;
-        border-radius: 79px;
-        margin: 5px;
+        transition: all 0.3s ease;
+        width: 90%;
+        max-width: 300px;
+        box-shadow: 6px 7px 6px rgba(5, 5, 5, 0.44);
       }
-
-      #custom-button-box .custom-button-box button:hover {
-        background-color: rgb(255, 0, 0); /* leve destaque ao passar o mouse */
-        color: white; 
+      .custom-check-button:hover {
+        background-color: #000000;
+        transform: scale(1.03);
       }
-
-      #custom-button-box .icon {
-        margin-right: 6px;
+            button .icon,
+      a       .icon {          /* inclui links estilizados como botão            */
+        font-size: 3.7rem;     /* ajuste aqui: 1rem ≈ 16 px; 2.4rem ≈ 38 px       */
+        line-height: 1;        /* mantém o emoji/SVG centralizado verticalmente  */
+        vertical-align: middle;
       }
-    </style>
-
-    <div class="custom-button-box">
-      <h2 style="color: red;">OUTROS LINKS CONSULTAS</h2>
-
-      <button onclick="openService('https://sistemas.glux.com.br/')">
-        <span class="icon">🧾</span> Consulta Laudos (GLUX)
-      </button>
-
-      <button onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">
-        <span class="icon">📑</span> Lista Disponíveis de ITS
-      </button>
-    </div>
-  </div>
-
-
-
-  <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Enel_Group_logo.svg" alt="Logo ENEL" style="width: 193px; height: auto; display: block; margin: 20px auto;">
-  <p style="text-align: center; font-style: italic; font-family: 'Courier New', Courier, monospace; margin-top: 40px;">
-      © 2025 Emanuel Aguiar (Assistente Administrativo Insourcing - Enel CE)<br>Todos os direitos reservados.
-  </p>
-
-  <script>
-      // sinalizador para pular validação ao recarregar
-    let skipValidation = sessionStorage.getItem('skipValidation') === 'true';
-    if (skipValidation) {
-      // limpamos o flag para que só valha neste carregamento
-      sessionStorage.removeItem('skipValidation');
-    }
-          // Variáveis globais
-      let processStarted = false;
-      let activeChecklist = null;
-      let activeTimerInterval = null;
-      let activeContainer = null;
-      let selectedChecklists = [];
-      let globalTimerInterval = null;
-      let globalTimerStart = null;
-      let welcomePopupShown = false;
-      let pdfSaved = false;
-
-      function showErrorPopupCustom(message) {
-          document.getElementById('error-message').textContent = message;
-          document.getElementById('error-popup').style.display = 'block';
-      }
-
-      function formatFullDateTime(date) {
-          const meses = [
-              "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-              "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
-          ];
-          let dia = date.getDate();
-          let mes = meses[date.getMonth()];
-          let ano = date.getFullYear();
-          let horas = date.getHours();
-          let minutos = date.getMinutes();
-          let segundos = date.getSeconds();
-          mes = mes.charAt(0).toUpperCase() + mes.slice(1);
-          let strHoras = `${horas} ${horas === 1 ? "hora" : "horas"}`;
-          let strMinutos = `${minutos} ${minutos === 1 ? "minuto" : "minutos"}`;
-          let strSegundos = `${segundos} ${segundos === 1 ? "segundo" : "segundos"}`;
-          return `${dia} de ${mes} de ${ano} às ${strHoras} e ${strMinutos} e ${strSegundos}`;
-      }
-
-      function getMissingTeamFields() {
-          let missing = [];
-          if (!document.getElementById('placa').value) missing.push("placa");
-          if (!document.getElementById('lead').value) missing.push("lead");
-          if (!document.getElementById('responsavel').value) missing.push("responsável");
-          if (!document.getElementById('supervisor').value) missing.push("supervisor");
-          return missing;
-      }
-
-      function canSavePdf() {
-          let missing = getMissingTeamFields();
-          if (missing.length > 0) {
-              showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
-              return false;
-          }
-          let completedCount = selectedChecklists.filter(item => item.ended).length;
-          if (completedCount < 3) {
-              showErrorPopupCustom("Por favor, complete pelo menos 3 checklists antes de salvar o PDF.");
-              return false;
-          }
-          return true;
-      }
-
-      document.getElementById('error-popup-close').addEventListener('click', function() {
-          document.getElementById('error-popup').style.display = 'none';
-      });
-      document.getElementById('pdf-popup-close').addEventListener('click', function() {
-          document.getElementById('pdf-popup').style.display = 'none';
-      });
-
-      function showWelcomePopup() {
-          if (!welcomePopupShown && !processStarted) {
-              document.getElementById('popup').style.display = 'block';
-              welcomePopupShown = true;
-              disableButtons();
-          }
-      }
-      function closeWelcomePopup() {
-          document.getElementById('popup').style.display = 'none';
-      }
-
-      function disableButtons() {
-          document.querySelectorAll('.button-default').forEach(btn => btn.classList.add('disabled'));
-      }
-      function enableButtons() {
-          document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('disabled'));
-      }
-
-      function checkTeamFields() {
-          let missing = getMissingTeamFields();
-          if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios caso deseje iniciar os cheklists.");
-          else {
-              document.getElementById('error-popup').style.display = 'none';
-              showWelcomePopup();
-          }
-      }
-
-      document.getElementById('placa').addEventListener('change', checkTeamFields);
-      document.getElementById('lead').addEventListener('change', checkTeamFields);
-      document.getElementById('responsavel').addEventListener('change', checkTeamFields);
-      document.getElementById('supervisor').addEventListener('change', checkTeamFields);
-
-        function resetPage() {
-      // marca que queremos pular validação no próximo onload
-      sessionStorage.setItem('skipValidation', 'true');
-      // execução de F5
-      window.location.reload();
+        /* Overlay: cobre a tela toda e fica por trás do popup */
+    #popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 1099;
     }
 
-      function startProcess() {
-          document.getElementById('popup').style.display = 'none';
-          processStarted = true;
-          enableButtons();
-          globalTimerStart = Date.now();
-          document.getElementById('global-clock').style.display = 'block';
-          globalTimerInterval = setInterval(() => {
-              let totalSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
-              document.getElementById('global-clock').textContent = formatTime(totalSeconds);
-          }, 1000);
-      }
+    /* Popup centralizado, fixo na tela, sem ocupar espaço no layout */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0,0,0,0.8);
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      max-width: 400px;
+      font-size: 16px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 1100;
+      text-align: left;
+    }
 
-      function formatTime(totalSeconds) {
-          let minutes = Math.floor(totalSeconds / 60);
-          let seconds = totalSeconds % 60;
-          let result = "";
-          if (minutes > 0) {
-              result += minutes + (minutes === 1 ? " minuto" : " minutos");
-              if (seconds > 0) result += " e " + seconds + (seconds === 1 ? " segundo" : " segundos");
-          } else result += seconds + (seconds === 1 ? " segundo" : " segundos");
-          return result;
-      }
+    /* Botão dentro do popup */
+    #popup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
 
-      // Atualiza o preview, incluindo os checklists realizados e o tempo da sessão (contador global)
-      function updatePreview() {
-        let endedChecklists = selectedChecklists.filter(item => item.ended);
-        if (endedChecklists.length === 0) {
-            document.getElementById('preview-text').textContent = "";
-            return;
+    .callback-button {
+    display: inline-block;
+    background-color: black;       /* fundo preto */
+    color: white;      /* texto E ícone brancos */
+    padding: 12px 87px;
+    font-size: 18px;
+    text-decoration: none;
+    border: 2px solid white;
+    border-radius: 89px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    }
+
+    .callback-button .icon {
+    margin-right: 10px;
+    color: white; /* Ícone branco */
+    }
+
+    .callback-button:hover {
+    background-color: white;
+    color: black;      /* texto preto */
+    border-color: black;
+    }
+
+    .callback-button:hover .icon {
+    color: black; /* Ícone preto no hover */
+    }  
+      </style>
+    <!-- Biblioteca html2pdf para gerar o PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  </head>
+  <body>
+        <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
+              <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 3.0)</h2>
+
+        <div class="service-highlight">
+          <a href="https://modelospadrao.github.io/callbackenel/" class="callback-button" target="_blank">
+            <i class="fas fa-phone icon"></i> INICIAR CALLBACK COM CLIENTES
+          </a>
+        </div>
+
+
+        <!-- ───────────── SERVIÇOS RH, BENEFÍCIOS e FALE CONOSCO ───────────── -->
+      <div id="services-section">
+        <h2>AUTO SERVIÇO RH ENEL</h2>
+
+        <div class="services-grid">
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip')">
+            <span class="icon">🏢</span> Portal RH
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enel_onboarding_all_hr_cases')">
+            <span class="icon">📂</span> Minhas Solicitações RH
+          </button>
+          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_CONTRA_CHEQUE')">
+            <span class="icon">💰</span> Emitir Contra-cheque
+          </button>
+          <button class="service-button" onclick="openService('https://nbp-as1.enelint.global:44331/sap/bc/webdynpro/sap/ZHR_AVISO_FERIAS')">
+            <span class="icon">🏖️</span> Emitir Aviso-Férias
+          </button>
+          <button class="service-button" onclick="openService('https://meuponto.enel.com/ForpontoWeb/Login.aspx?')">
+            <span class="icon">⏱️</span> Forponto
+          </button>
+          <button class="service-button" onclick="abrirPopup()">
+            <span class="icon">🩺</span> Cadastro de Atestado Médico (Até 3 dias)
+          </button>
+
+          <div id="popup-overlay"></div>
+
+          <div id="popup">
+           <p style="text-align: left; font-size: 16px; color: white; max-width: 420px; line-height: 1.5;">
+            ⚠️ <strong>Atenção!</strong><br>
+            Aqui está o formulário para inclusão do seu atestado <strong>igual ou inferior a três dias</strong>, destinado a colaboradores administrativos e operacionais.<br><br>
+
+             <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 45px;">📝</span>
+              <span><strong>1 a 3 dias:</strong><br>Utilize este formulário.</span>
+            </span><br>
+
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 45px;">📧</span>
+              <span><strong>4 a 14 dias:</strong><br>Procurar (Supervisor/Gestor)<br>Não preencher o formulário.</span>
+            </span><br>
+
+            <span style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 45px;">🏥</span>
+              <span><strong>Acima de 15 dias:</strong><br>Para afastamentos pelo INSS, procure a equipe médica e os responsáveis pelo suporte necessário.
+                </span>
+            </span>
+          </p>
+            <button onclick="fecharPopup()" style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+              <strong>Clique aqui se deseja:</strong><br>Prosseguir com preenchimento deste formulário.
+            </button>
+             <!-- Botão só para fechar -->
+            <button onclick="fecharSomentePopup()" 
+              style="margin-top: 28px; background-color: red; color: white; padding: 13px 16px; border: none; border-radius: 8px; cursor: pointer; display: block; margin-left: auto; margin-right: auto;">
+              Fechar
+            </button>
+          </div>
+          <button class="service-button" onclick="openService('****https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUMFVKMU0zU1RCTTZWRjJRNUZLWlcyRUtGSi4u&route=shorturl')">
+            <span class="icon">⏳</span> Formulário de Hora Extra
+          </button>
+          <button class="service-button" onclick="openService('https://aka.ms/mfasetup')">
+            <span class="icon">📱</span> Alterar Nº Celular (SMS)
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/me?id=ofe3_home&tab=1&set_view=true')">
+            <span class="icon">💬</span> Open Feedback
+          </button>
+          <button class="service-button" onclick="openService('https://enelcom.sharepoint.com/sites/Sistema_de_Gestao_Integrado_v2/SitePages/SGI.aspx?OR=Teams%2DHL&CT=1663169415864')">
+            <span class="icon">🧾</span> SGI – Sistema de Gestão Integrada
+          </button>
+                </div>
+
+        <br><br><h2>BENEFÍCIOS (SOLICITAR/ALTERAR)</h2>
+        <div class="services-grid">
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=d5ad46d8db7c0b0048fcf5b31d9619ab&preferredlanguage=pb')">
+            <span class="icon">💊</span> Plano Saúde / Odonto
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=2091e258dbfc0b0048fcf5b31d96194a&preferredlanguage=pb')">
+            <span class="icon">👶</span> Auxílio Creche / Babá
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=decad2dcdbbc0b0048fcf5b31d961999&preferredlanguage=pb')">
+            <span class="icon">🍽️</span> Vale Refeição / Alimentação
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=13cec9e2db2d4b0048fcf5b31d96193d&preferredlanguage=pb')">
+            <span class="icon">🚌</span> Vale Transporte
+          </button>
+
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=e434086fdb8d6bc048fcf5b31d961988&preferredlanguage=')">
+            <span class="icon">🛫</span> Gestão de Viagens
+          </button>
+          </div>
+
+        <br><br><h2>FALE CONOSCO</h2>
+        <div class="services-grid">
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=455fe65cdb304b0048fcf5b31d9619ab&preferredlanguage=pb')">
+            <span class="icon">❓</span> Dúvidas
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=11a4fe54db704b0048fcf5b31d96199d&preferredlanguage=pb')">
+            <span class="icon">📢</span> Reclamação
+          </button>
+          <button class="service-button" onclick="openService('https://enel.service-now.com/oip?id=enelsc_cat_item&sys_id=73b23ad0db704b0048fcf5b31d9619ef&preferredlanguage=pb')">
+            <span class="icon">💡</span> Sugestões
+          </button>
+        </div>
+
+        <div class="service-highlight">
+          <a href="https://enel.service-now.com/me" class="service-button" target="_blank">
+            <span class="icon">🌐</span> PORTAL (ME)
+          </a>
+        </div>
+
+
+        <br><br><h2>ENVIAR E-MAILS</h2>
+
+        <div class="service-highlight">
+          <a href="mailto:hr.suporte@enel.com" class="service-button">
+            <span class="icon">📩</span> HR. Suporte ENEL
+          </a>
+
+
+        <div class="service-highlight">
+          <a href="mailto:Lista_medicina_ocupacional_enel_ce@enel.com" class="service-button">
+            <span class="icon">📩</span> RH – Medicina Ocupacional
+          </a>
+        </div>
+      </div>
+
+      <!-- ───────────── FORMULÁRIOS (EPI / MATERIAL / SUCATA) ───────────── -->
+      <div class="custom-button-box">
+        <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS RECEBIMENTO EPI/EPC</h2>
+        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/pages/responsepage.aspx?id=v9Q51RBWGkevwhx2aFz--ikgi4EnFipIi1NnMfWwdZ1UNTUxNzUzNkxTMjU3MjlCUVFVN0ZVNjI4NC4u&route=shorturl')">
+          <span class="icon">📋</span> INICIAR FORMULÁRIO
+        </button>
+      </div>
+
+      <div class="custom-button-box">
+        <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS CONTROLE MATERIAL</h2>
+        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--vif9IoXNfZJiV8y_OJevNtUNzdKNFVYMzQ5S1dZVFAzNUFQTjFRODRSUC4u')">
+          <span class="icon">📋</span> INICIAR FORMULÁRIO
+        </button>
+      </div>
+
+      <div class="custom-button-box">
+        <h2 style="text-align:center;color:#0d47a1;margin:0;">FORMS DEVOLUÇÕES DE MATERIAIS E SUCATAS</h2>
+        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJUOVBYVEVKWTAyV0EzVk9KMTNCWDhVU1c2RC4u')">
+          <span class="icon">📋</span> MANUTENÇÃO PREVENTIVA (PROGRAMADA)
+        </button>
+        <button class="custom-rounded-button" onclick="openService('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--ifn_UUIgwdGnkSrmzu_SlJURUJSVkVMRU40UFhWODZEQVpTN0VTOUFYNS4u')">
+          <span class="icon">📋</span> MANUTENÇÃO CORRETIVA (EMERGÊNCIAL)
+        </button>
+      </div>
+
+      <!-- ───────────── CHECKLIST DIÁRIO ───────────── -->
+      <div class="custom-button-box">
+        <h2 style="text-align:center;color:#ef852a;margin:0;">INÍCIO CHECKLIST DIÁRIO (ATALHOS)</h2>
+        <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_jacarecanga')">
+          <span class="icon">🧾</span> JACARECANGA
+        </button>
+        <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_maracanau')">
+          <span class="icon">🧾</span> MARACANAÚ
+        </button>
+        <button class="custom-check-button" onclick="openService('https://modelospadrao.github.io/checklist_messejana')">
+          <span class="icon">🧾</span> MESSEJANA
+        </button>
+      </div>
+
+   <!-- ───────────── OUTROS LINKS ───────────── -->
+    <div id="custom-button-box">
+      <style>
+        #custom-button-box .custom-button-box button {
+          border: 3px solid #ff0000;
+          color: #000;
+          background-color: white;
+          padding: 10px 87px;
+          font-size: 20px;
+          cursor: pointer;
+          border-radius: 79px;
+          margin: 5px;
         }
 
-        let placa = document.getElementById('placa').value;
-        let lead = document.getElementById('lead').value;
-        let responsavel = document.getElementById('responsavel').value;
-        let supervisor = document.getElementById('supervisor').value;
+        #custom-button-box .custom-button-box button:hover {
+          background-color: rgb(255, 0, 0); /* leve destaque ao passar o mouse */
+          color: white; 
+        }
 
-        let previewMessage = "---- *DADOS DA EQUIPE* ----\n\n";
-        previewMessage += `*PLACA:* ${placa}\n`;
-        previewMessage += `*LEAD:* ${lead}\n`;
-        previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
-        previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
+        #custom-button-box .icon {
+          margin-right: 6px;
+        }
+      </style>
 
-        previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
-        previewMessage += `Total Realizados: ${endedChecklists.length}\n\n`;
+      <div class="custom-button-box">
+        <h2 style="color: red;">OUTROS LINKS CONSULTAS</h2>
 
-        endedChecklists.forEach(item => {
-            previewMessage += `*${item.name}:*\n`;
-            previewMessage += `Iniciado às ${item.startTime}\n`;
-            previewMessage += `Encerrado às ${item.endTime}\n`;
-            previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
-            previewMessage += "\n----------------------------\n\n";
+        <button onclick="openService('https://sistemas.glux.com.br/')">
+          <span class="icon">🧾</span> Consulta Laudos (GLUX)
+        </button>
+
+        <button onclick="openService('https://enel.service-now.com/grids?id=gin_documents&docType=perimeters&p=00000010&u=&act=&cat=Brazil')">
+          <span class="icon">📑</span> Lista Disponíveis de ITS
+        </button>
+      </div>
+    </div>
+
+
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Enel_Group_logo.svg" alt="Logo ENEL" style="width: 193px; height: auto; display: block; margin: 20px auto;">
+    <p style="text-align: center; font-style: italic; font-family: 'Courier New', Courier, monospace; margin-top: 40px;">
+        © 2025 Emanuel Aguiar (Assistente Administrativo Insourcing - Enel CE)<br>Todos os direitos reservados.
+    </p>
+
+    <script>
+        // sinalizador para pular validação ao recarregar
+      let skipValidation = sessionStorage.getItem('skipValidation') === 'true';
+      if (skipValidation) {
+        // limpamos o flag para que só valha neste carregamento
+        sessionStorage.removeItem('skipValidation');
+      }
+            // Variáveis globais
+        let processStarted = false;
+        let activeChecklist = null;
+        let activeTimerInterval = null;
+        let activeContainer = null;
+        let selectedChecklists = [];
+        let globalTimerInterval = null;
+        let globalTimerStart = null;
+        let welcomePopupShown = false;
+        let pdfSaved = false;
+
+        function showErrorPopupCustom(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-popup').style.display = 'block';
+        }
+
+        function formatFullDateTime(date) {
+            const meses = [
+                "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+                "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"
+            ];
+            let dia = date.getDate();
+            let mes = meses[date.getMonth()];
+            let ano = date.getFullYear();
+            let horas = date.getHours();
+            let minutos = date.getMinutes();
+            let segundos = date.getSeconds();
+            mes = mes.charAt(0).toUpperCase() + mes.slice(1);
+            let strHoras = `${horas} ${horas === 1 ? "hora" : "horas"}`;
+            let strMinutos = `${minutos} ${minutos === 1 ? "minuto" : "minutos"}`;
+            let strSegundos = `${segundos} ${segundos === 1 ? "segundo" : "segundos"}`;
+            return `${dia} de ${mes} de ${ano} às ${strHoras} e ${strMinutos} e ${strSegundos}`;
+        }
+
+        function getMissingTeamFields() {
+            let missing = [];
+            if (!document.getElementById('placa').value) missing.push("placa");
+            if (!document.getElementById('lead').value) missing.push("lead");
+            if (!document.getElementById('responsavel').value) missing.push("responsável");
+            if (!document.getElementById('supervisor').value) missing.push("supervisor");
+            return missing;
+        }
+
+        function canSavePdf() {
+            let missing = getMissingTeamFields();
+            if (missing.length > 0) {
+                showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
+                return false;
+            }
+            let completedCount = selectedChecklists.filter(item => item.ended).length;
+            if (completedCount < 3) {
+                showErrorPopupCustom("Por favor, complete pelo menos 3 checklists antes de salvar o PDF.");
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById('error-popup-close').addEventListener('click', function() {
+            document.getElementById('error-popup').style.display = 'none';
+        });
+        document.getElementById('pdf-popup-close').addEventListener('click', function() {
+            document.getElementById('pdf-popup').style.display = 'none';
         });
 
-        if (endedChecklists.length >= 3) {
-            let now = new Date();
-            previewMessage += formatFullDateTime(now) + "\n";
-            let totalTime = endedChecklists.reduce((acc, item) => acc + item.elapsedSeconds, 0);
-            previewMessage += `*Tempo total gasto:* ${formatTime(totalTime)}\n`;
+        function showWelcomePopup() {
+            if (!welcomePopupShown && !processStarted) {
+                document.getElementById('popup').style.display = 'block';
+                welcomePopupShown = true;
+                disableButtons();
+            }
+        }
+        function closeWelcomePopup() {
+            document.getElementById('popup').style.display = 'none';
         }
 
-        // Adiciona o tempo da sessão, que corresponde ao contador global
-        if (globalTimerStart) {
-            let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
-            previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
+        function disableButtons() {
+            document.querySelectorAll('.button-default').forEach(btn => btn.classList.add('disabled'));
+        }
+        function enableButtons() {
+            document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('disabled'));
         }
 
-        document.getElementById('relatorio-titulo').textContent = 
-            `RELATÓRIO DE CHECKLIST REALIZADOS (${endedChecklists.length})`;
+        function checkTeamFields() {
+            let missing = getMissingTeamFields();
+            if (missing.length > 0) showErrorPopupCustom("Preencha os campos obrigatórios caso deseje iniciar os cheklists.");
+            else {
+                document.getElementById('error-popup').style.display = 'none';
+                showWelcomePopup();
+            }
+        }
 
-        // Aqui a correção definitiva: usar textContent ao invés de innerHTML
-        document.getElementById('preview-text').textContent = previewMessage;
-    }
+        document.getElementById('placa').addEventListener('change', checkTeamFields);
+        document.getElementById('lead').addEventListener('change', checkTeamFields);
+        document.getElementById('responsavel').addEventListener('change', checkTeamFields);
+        document.getElementById('supervisor').addEventListener('change', checkTeamFields);
 
+          function resetPage() {
+        // marca que queremos pular validação no próximo onload
+        sessionStorage.setItem('skipValidation', 'true');
+        // execução de F5
+        window.location.reload();
+      }
 
-      // Chamada de updatePreview a cada 2 minutos
-      setInterval(updatePreview, 120000);
+        function startProcess() {
+            document.getElementById('popup').style.display = 'none';
+            processStarted = true;
+            enableButtons();
+            globalTimerStart = Date.now();
+            document.getElementById('global-clock').style.display = 'block';
+            globalTimerInterval = setInterval(() => {
+                let totalSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
+                document.getElementById('global-clock').textContent = formatTime(totalSeconds);
+            }, 1000);
+        }
 
-      function handleClick(button, checklistName, url) {
-          let missing = getMissingTeamFields();
-          if (missing.length > 0) {
-              showErrorPopupCustom("Preencha os campos obrigatórios.");
+        function formatTime(totalSeconds) {
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+            let result = "";
+            if (minutes > 0) {
+                result += minutes + (minutes === 1 ? " minuto" : " minutos");
+                if (seconds > 0) result += " e " + seconds + (seconds === 1 ? " segundo" : " segundos");
+            } else result += seconds + (seconds === 1 ? " segundo" : " segundos");
+            return result;
+        }
+
+        // Atualiza o preview, incluindo os checklists realizados e o tempo da sessão (contador global)
+        function updatePreview() {
+          let endedChecklists = selectedChecklists.filter(item => item.ended);
+          if (endedChecklists.length === 0) {
+              document.getElementById('preview-text').textContent = "";
               return;
           }
-          if (!processStarted) return;
-          if (activeChecklist !== null) {
-              document.getElementById('checklist-popup').style.display = 'block';
-              return;
-          }
-          activeChecklist = {
-              name: checklistName,
-              button: button,
-              startTimestamp: Date.now(),
-              startTime: new Date().toLocaleTimeString(),
-              elapsedSeconds: 0,
-              ended: false
-          };
-          selectedChecklists.push(activeChecklist);
-          updatePreview();
-          window.open(url, '_blank');
-          activeContainer = document.createElement('div');
-          activeContainer.className = 'active-checklist-container';
-          let timerSpan = document.createElement('span');
-          timerSpan.className = 'timer-display';
-          timerSpan.textContent = "Tempo: 0 segundos";
-          let endButton = document.createElement('button');
-          endButton.className = "button-default";
-          endButton.textContent = "Encerrar Checklist";
-          endButton.onclick = endChecklist;
-          activeContainer.appendChild(timerSpan);
-          activeContainer.appendChild(endButton);
-          button.parentNode.insertBefore(activeContainer, button.nextSibling);
-          activeTimerInterval = setInterval(() => {
-              let elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
-              timerSpan.textContent = `Tempo: ${formatTime(elapsedSeconds)}`;
-          }, 1000);
-      }
 
-      function closeChecklistPopup() {
-          document.getElementById('checklist-popup').style.display = 'none';
-      }
-
-      function endChecklist() {
-      // 1) para o timer “flutuante”
-      if (activeTimerInterval) {
-          clearInterval(activeTimerInterval);
-          activeTimerInterval = null;
-      }
-
-      // 2) calcula o tempo gasto
-      const elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
-      const elapsedFormatted = formatTime(elapsedSeconds);
-      activeChecklist.elapsedSeconds = elapsedSeconds;
-      activeChecklist.endTime = new Date().toLocaleTimeString();
-      activeChecklist.ended = true;
-
-          if (activeChecklist.button) {
-      // já bloqueou e pintou o botão de verde...
-      activeChecklist.button.classList.remove('active-button');
-      activeChecklist.button.classList.add('completed-button');
-      activeChecklist.button.disabled = true;
-
-      // cria a caixinha de status
-      const statusBox = document.createElement('div');
-      statusBox.className = 'status-box';
-
-      // “Realizado”
-      const statusText = document.createElement('div');
-      statusText.className = 'status-text';
-      statusText.textContent = 'Realizado';
-      statusBox.appendChild(statusText);
-
-      // “Tempo: X”
-      const timeText = document.createElement('div');
-      timeText.className = 'time-text';
-      timeText.textContent = `Tempo: ${elapsedFormatted}`;
-      statusBox.appendChild(timeText);
-
-      // anexa ao botão
-      activeChecklist.button.appendChild(statusBox);
-    }
-
-      // 6) limpa o timer extra e reabilita demais
-      if (activeContainer && activeContainer.parentNode) {
-          activeContainer.parentNode.removeChild(activeContainer);
-      }
-      document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('active-button'));
-      activeChecklist = null;
-      activeContainer = null;
-      updatePreview();
-      enableButtons();
-  }
-
-
-      // Atualiza o preview antes de salvar o PDF
-      function savePdf() {
-          updatePreview();
-          if (!canSavePdf()) {
-              return;
-          }
-          var container = document.querySelector('.container');
-          var width = container.offsetWidth;
-          var height = container.offsetHeight;
-          
           let placa = document.getElementById('placa').value;
           let lead = document.getElementById('lead').value;
-          
-          let now = new Date();
-          let fullDate = formatFullDateTime(now);
-          let fileName = `${lead} (${placa}) Checklist realizado ${fullDate}.pdf`;
-          
-          html2pdf(container, {
-              margin: 0,
-              filename: fileName,
-              image: { type: 'jpeg', quality: 0.99 },
-              html2canvas: { scale: 2 },
-              jsPDF: {
-                  unit: 'px',
-                  format: [width, height],
-                  orientation: 'portrait'
-              }
-          }).then(() => {
-              pdfSaved = true;
-              const pdfButton = document.getElementById('save-pdf-button');
-              pdfButton.disabled = true;
-              pdfButton.textContent = "PDF já salvo";
-              const sendButton = document.getElementById('send-button');
-              sendButton.classList.remove('disabled-btn');
-              document.getElementById('pdf-popup').style.display = 'block';
+          let responsavel = document.getElementById('responsavel').value;
+          let supervisor = document.getElementById('supervisor').value;
+
+          let previewMessage = "---- *DADOS DA EQUIPE* ----\n\n";
+          previewMessage += `*PLACA:* ${placa}\n`;
+          previewMessage += `*LEAD:* ${lead}\n`;
+          previewMessage += `*RESPONSAVEL:* ${responsavel}\n`;
+          previewMessage += `*SUPERVISOR:* ${supervisor}\n\n`;
+
+          previewMessage += "---- *CHECKLISTS REALIZADOS* ----\n\n";
+          previewMessage += `Total Realizados: ${endedChecklists.length}\n\n`;
+
+          endedChecklists.forEach(item => {
+              previewMessage += `*${item.name}:*\n`;
+              previewMessage += `Iniciado às ${item.startTime}\n`;
+              previewMessage += `Encerrado às ${item.endTime}\n`;
+              previewMessage += `*Tempo gasto:* ${formatTime(item.elapsedSeconds)}\n`;
+              previewMessage += "\n----------------------------\n\n";
           });
-      }
 
-      function encaminharWhatsApp() {
-          let missing = getMissingTeamFields();
-          if (missing.length > 0) {
-              showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
-              return;
-          }
-          if (!pdfSaved) {
-              showErrorPopupCustom("Você precisa salvar o PDF antes de encaminhar via WhatsApp.");
-              return;
+          if (endedChecklists.length >= 3) {
+              let now = new Date();
+              previewMessage += formatFullDateTime(now) + "\n";
+              let totalTime = endedChecklists.reduce((acc, item) => acc + item.elapsedSeconds, 0);
+              previewMessage += `*Tempo total gasto:* ${formatTime(totalTime)}\n`;
           }
 
-          // Aqui a correção definitiva
-          let message = document.getElementById('preview-text').textContent;
-          message = encodeURIComponent(message);
-          window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
-      }
-
-
-      function clearData() {
-          selectedChecklists = [];
-          updatePreview();
-          if (activeContainer && activeContainer.parentNode) {
-              activeContainer.parentNode.removeChild(activeContainer);
+          // Adiciona o tempo da sessão, que corresponde ao contador global
+          if (globalTimerStart) {
+              let sessionSeconds = Math.floor((Date.now() - globalTimerStart) / 1000);
+              previewMessage += `\n*Tempo da sessão:* ${formatTime(sessionSeconds)}\n`;
           }
-          activeChecklist = null;
-          enableButtons();
+
+          document.getElementById('relatorio-titulo').textContent = 
+              `RELATÓRIO DE CHECKLIST REALIZADOS (${endedChecklists.length})`;
+
+          // Aqui a correção definitiva: usar textContent ao invés de innerHTML
+          document.getElementById('preview-text').textContent = previewMessage;
       }
 
-      window.onload = function() {
-      // só chama checkTeamFields se não estivermos no reset
-      if (!skipValidation) {
-        checkTeamFields();
-      }
-    };
-      
-      /* Bloqueia o botão de voltar do celular */
-      window.history.pushState(null, null, window.location.href);
-      window.addEventListener('popstate', function (event) {
-          window.history.pushState(null, null, window.location.href);
-      });
-      // Abre links de serviço sem tocar no contador
-       function openService(url) {
-          if (typeof url === 'string' && url.startsWith('http')) {
+
+        // Chamada de updatePreview a cada 2 minutos
+        setInterval(updatePreview, 120000);
+
+        function handleClick(button, checklistName, url) {
+            let missing = getMissingTeamFields();
+            if (missing.length > 0) {
+                showErrorPopupCustom("Preencha os campos obrigatórios.");
+                return;
+            }
+            if (!processStarted) return;
+            if (activeChecklist !== null) {
+                document.getElementById('checklist-popup').style.display = 'block';
+                return;
+            }
+            activeChecklist = {
+                name: checklistName,
+                button: button,
+                startTimestamp: Date.now(),
+                startTime: new Date().toLocaleTimeString(),
+                elapsedSeconds: 0,
+                ended: false
+            };
+            selectedChecklists.push(activeChecklist);
+            updatePreview();
             window.open(url, '_blank');
-          } else {
-            alert("URL inválida.");
+            activeContainer = document.createElement('div');
+            activeContainer.className = 'active-checklist-container';
+            let timerSpan = document.createElement('span');
+            timerSpan.className = 'timer-display';
+            timerSpan.textContent = "Tempo: 0 segundos";
+            let endButton = document.createElement('button');
+            endButton.className = "button-default";
+            endButton.textContent = "Encerrar Checklist";
+            endButton.onclick = endChecklist;
+            activeContainer.appendChild(timerSpan);
+            activeContainer.appendChild(endButton);
+            button.parentNode.insertBefore(activeContainer, button.nextSibling);
+            activeTimerInterval = setInterval(() => {
+                let elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
+                timerSpan.textContent = `Tempo: ${formatTime(elapsedSeconds)}`;
+            }, 1000);
+        }
+
+        function closeChecklistPopup() {
+            document.getElementById('checklist-popup').style.display = 'none';
+        }
+
+        function endChecklist() {
+        // 1) para o timer “flutuante”
+        if (activeTimerInterval) {
+            clearInterval(activeTimerInterval);
+            activeTimerInterval = null;
+        }
+
+        // 2) calcula o tempo gasto
+        const elapsedSeconds = Math.floor((Date.now() - activeChecklist.startTimestamp) / 1000);
+        const elapsedFormatted = formatTime(elapsedSeconds);
+        activeChecklist.elapsedSeconds = elapsedSeconds;
+        activeChecklist.endTime = new Date().toLocaleTimeString();
+        activeChecklist.ended = true;
+
+            if (activeChecklist.button) {
+        // já bloqueou e pintou o botão de verde...
+        activeChecklist.button.classList.remove('active-button');
+        activeChecklist.button.classList.add('completed-button');
+        activeChecklist.button.disabled = true;
+
+        // cria a caixinha de status
+        const statusBox = document.createElement('div');
+        statusBox.className = 'status-box';
+
+        // “Realizado”
+        const statusText = document.createElement('div');
+        statusText.className = 'status-text';
+        statusText.textContent = 'Realizado';
+        statusBox.appendChild(statusText);
+
+        // “Tempo: X”
+        const timeText = document.createElement('div');
+        timeText.className = 'time-text';
+        timeText.textContent = `Tempo: ${elapsedFormatted}`;
+        statusBox.appendChild(timeText);
+
+        // anexa ao botão
+        activeChecklist.button.appendChild(statusBox);
+      }
+
+        // 6) limpa o timer extra e reabilita demais
+        if (activeContainer && activeContainer.parentNode) {
+            activeContainer.parentNode.removeChild(activeContainer);
+        }
+        document.querySelectorAll('.button-default').forEach(btn => btn.classList.remove('active-button'));
+        activeChecklist = null;
+        activeContainer = null;
+        updatePreview();
+        enableButtons();
+    }
+
+
+        // Atualiza o preview antes de salvar o PDF
+        function savePdf() {
+            updatePreview();
+            if (!canSavePdf()) {
+                return;
+            }
+            var container = document.querySelector('.container');
+            var width = container.offsetWidth;
+            var height = container.offsetHeight;
+
+            let placa = document.getElementById('placa').value;
+            let lead = document.getElementById('lead').value;
+
+            let now = new Date();
+            let fullDate = formatFullDateTime(now);
+            let fileName = `${lead} (${placa}) Checklist realizado ${fullDate}.pdf`;
+
+            html2pdf(container, {
+                margin: 0,
+                filename: fileName,
+                image: { type: 'jpeg', quality: 0.99 },
+                html2canvas: { scale: 2 },
+                jsPDF: {
+                    unit: 'px',
+                    format: [width, height],
+                    orientation: 'portrait'
+                }
+            }).then(() => {
+                pdfSaved = true;
+                const pdfButton = document.getElementById('save-pdf-button');
+                pdfButton.disabled = true;
+                pdfButton.textContent = "PDF já salvo";
+                const sendButton = document.getElementById('send-button');
+                sendButton.classList.remove('disabled-btn');
+                document.getElementById('pdf-popup').style.display = 'block';
+            });
+        }
+
+        function encaminharWhatsApp() {
+            let missing = getMissingTeamFields();
+            if (missing.length > 0) {
+                showErrorPopupCustom("Por favor, preencha os seguintes campos: " + missing.join(", "));
+                return;
+            }
+            if (!pdfSaved) {
+                showErrorPopupCustom("Você precisa salvar o PDF antes de encaminhar via WhatsApp.");
+                return;
+            }
+
+            // Aqui a correção definitiva
+            let message = document.getElementById('preview-text').textContent;
+            message = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?text=${message}`, '_blank');
+        }
+
+
+        function clearData() {
+            selectedChecklists = [];
+            updatePreview();
+            if (activeContainer && activeContainer.parentNode) {
+                activeContainer.parentNode.removeChild(activeContainer);
+            }
+            activeChecklist = null;
+            enableButtons();
+        }
+
+        window.onload = function() {
+        // só chama checkTeamFields se não estivermos no reset
+        if (!skipValidation) {
+          checkTeamFields();
+        }
+      };
+
+        /* Bloqueia o botão de voltar do celular */
+        window.history.pushState(null, null, window.location.href);
+        window.addEventListener('popstate', function (event) {
+            window.history.pushState(null, null, window.location.href);
+        });
+        // Abre links de serviço sem tocar no contador
+         function openService(url) {
+            if (typeof url === 'string' && url.startsWith('http')) {
+              window.open(url, '_blank');
+            } else {
+              alert("URL inválida.");
+            }
           }
-        }
 
-        // Desativa apenas botões de checklist
-        function disableChecklistButtons() {
-          document.querySelectorAll('.checklist-button')
-                  .forEach(btn => btn.classList.add('disabled'));
-        }
-        function enableChecklistButtons() {
-          document.querySelectorAll('.checklist-button')
-                  .forEach(btn => btn.classList.remove('disabled'));
-        }
-      function loadExternalData() {
-      // 1) Placas
-      fetch('placas_JACARECANGA.json')
-        .then(res => res.json())
-        .then(data => {
-          const placaSelect = document.getElementById('placa');
-          placaSelect.innerHTML = '<option value="">Selecione</option>';
-          data.forEach(p => {
-            const opt = document.createElement('option');
-            opt.value = p;
-            opt.textContent = p;
-            placaSelect.appendChild(opt);
-          });
-        })
-        .catch(err => console.error('Erro ao carregar placas:', err));
-
-            // 1) Placas
+          // Desativa apenas botões de checklist
+          function disableChecklistButtons() {
+            document.querySelectorAll('.checklist-button')
+                    .forEach(btn => btn.classList.add('disabled'));
+          }
+          function enableChecklistButtons() {
+            document.querySelectorAll('.checklist-button')
+                    .forEach(btn => btn.classList.remove('disabled'));
+          }
+        function loadExternalData() {
+        // 1) Placas
         fetch('placas_JACARECANGA.json')
           .then(res => res.json())
           .then(data => {
@@ -1355,69 +1340,84 @@
             placaSelect.innerHTML = '<option value="">Selecione</option>';
             data.forEach(p => {
               const opt = document.createElement('option');
-              opt.value = p; opt.textContent = p;
+              opt.value = p;
+              opt.textContent = p;
               placaSelect.appendChild(opt);
             });
           })
           .catch(err => console.error('Erro ao carregar placas:', err));
 
-        // 2) Leads
-        fetch('leads_JACARECANGA.json')
-          .then(res => res.json())
-          .then(data => {
-            const leadSelect = document.getElementById('lead');
-            leadSelect.innerHTML = '<option value="">Selecione</option>';
-            data.forEach(l => {
-              const opt = document.createElement('option');
-              opt.value = l; opt.textContent = l;
-              leadSelect.appendChild(opt);
-            });
-          })
-          .catch(err => console.error('Erro ao carregar leads:', err));
+              // 1) Placas
+          fetch('placas_JACARECANGA.json')
+            .then(res => res.json())
+            .then(data => {
+              const placaSelect = document.getElementById('placa');
+              placaSelect.innerHTML = '<option value="">Selecione</option>';
+              data.forEach(p => {
+                const opt = document.createElement('option');
+                opt.value = p; opt.textContent = p;
+                placaSelect.appendChild(opt);
+              });
+            })
+            .catch(err => console.error('Erro ao carregar placas:', err));
 
-        // 3) Eletricistas → apenas RESPONSÁVEL
-        fetch('eletricistas.json')
-          .then(res => res.json())
-          .then(data => {
-            const respSel = document.getElementById('responsavel');
-            respSel.innerHTML = '<option value="">Selecione</option>';
-            data.forEach(name => {
-              const opt = document.createElement('option');
-              opt.value = name; opt.textContent = name;
-              respSel.appendChild(opt);
-            });
-          })
-          .catch(err => console.error('Erro ao carregar eletricistas:', err));
+          // 2) Leads
+          fetch('leads_JACARECANGA.json')
+            .then(res => res.json())
+            .then(data => {
+              const leadSelect = document.getElementById('lead');
+              leadSelect.innerHTML = '<option value="">Selecione</option>';
+              data.forEach(l => {
+                const opt = document.createElement('option');
+                opt.value = l; opt.textContent = l;
+                leadSelect.appendChild(opt);
+              });
+            })
+            .catch(err => console.error('Erro ao carregar leads:', err));
 
-        // 4) Supervisores → apenas SUPERVISOR
-        fetch('supervisores.json')
-          .then(res => res.json())
-          .then(data => {
-            const supSel = document.getElementById('supervisor');
-            supSel.innerHTML = '<option value="">Selecione</option>';
-            data.forEach(name => {
-              const opt = document.createElement('option');
-              opt.value = name; opt.textContent = name;
-              supSel.appendChild(opt);
-            });
-          })
-          .catch(err => console.error('Erro ao carregar supervisores:', err));
-      }
+          // 3) Eletricistas → apenas RESPONSÁVEL
+          fetch('eletricistas.json')
+            .then(res => res.json())
+            .then(data => {
+              const respSel = document.getElementById('responsavel');
+              respSel.innerHTML = '<option value="">Selecione</option>';
+              data.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name; opt.textContent = name;
+                respSel.appendChild(opt);
+              });
+            })
+            .catch(err => console.error('Erro ao carregar eletricistas:', err));
 
-      window.addEventListener('load', loadExternalData);
-     function abrirPopup() {
-        document.getElementById('popup-overlay').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
-      }
-      function fecharPopup() {
-        document.getElementById('popup-overlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-        window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
-      }
-          function fecharSomentePopup() {
-        document.getElementById('popup-overlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-      }
-  </script>
-</body>
-</html>
+          // 4) Supervisores → apenas SUPERVISOR
+          fetch('supervisores.json')
+            .then(res => res.json())
+            .then(data => {
+              const supSel = document.getElementById('supervisor');
+              supSel.innerHTML = '<option value="">Selecione</option>';
+              data.forEach(name => {
+                const opt = document.createElement('option');
+                opt.value = name; opt.textContent = name;
+                supSel.appendChild(opt);
+              });
+            })
+            .catch(err => console.error('Erro ao carregar supervisores:', err));
+        }
+
+        window.addEventListener('load', loadExternalData);
+       function abrirPopup() {
+          document.getElementById('popup-overlay').style.display = 'block';
+          document.getElementById('popup').style.display = 'block';
+        }
+        function fecharPopup() {
+          document.getElementById('popup-overlay').style.display = 'none';
+          document.getElementById('popup').style.display = 'none';
+          window.open('https://forms.office.com/Pages/ResponsePage.aspx?id=v9Q51RBWGkevwhx2aFz--kodsFLyIElCnReRmcPgTT9UOTNMQTlYSTdVUTdZSkhIUkdPSVY2RkhGNS4u', '_blank');
+        }
+            function fecharSomentePopup() {
+          document.getElementById('popup-overlay').style.display = 'none';
+          document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+  </body>
+  </html>
