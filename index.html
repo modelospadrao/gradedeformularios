@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Adicione isso no <head> da sua página uma vez -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
   <title>ATALHOS PARA LINKS/ENEL CE</title>
   <style>
       /* Estilos gerais e aprimoramento dos botões */
@@ -673,11 +676,42 @@
       <h2 style="text-align: center; font-size: 25px; font-weight: bold; color: #e63946;">ACESSO FORMULÁRIOS<BR>E LINKS ENEL/CE</h2>
             <h2 style="text-align: center; font-size: 21px; font-weight: bold; color: #000;">(Versão 3.0)</h2>
 
-       <div class="service-highlight">
-        <a href="https://modelospadrao.github.io/callbackenel/" class="service-button" target="_blank">
-          <span class="icon">📞</span> INICIAR CALLBACK COM CLIENTES
+      <div class="service-highlight">
+        <style>
+          .callback-button {
+            display: inline-block;
+            background-color: black;       /* fundo preto */
+            color: white;                  /* texto E ícone brancos */
+            padding: 12px 87px;
+            font-size: 18px;
+            text-decoration: none;
+            border: 2px solid white;
+            border-radius: 89px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+          }
+
+          .callback-button .icon {
+            margin-right: 10px;
+            color: white; /* Ícone branco */
+          }
+
+          .callback-button:hover {
+            background-color: white;
+            color: black;                  /* texto preto */
+            border-color: black;
+          }
+
+          .callback-button:hover .icon {
+            color: black; /* Ícone preto no hover */
+          }
+        </style>
+
+        <a href="https://modelospadrao.github.io/callbackenel/" class="callback-button" target="_blank">
+          <i class="fas fa-phone icon"></i> INICIAR CALLBACK COM CLIENTES
         </a>
-      </div> 
+      </div>
+
   
       <!-- ───────────── SERVIÇOS RH, BENEFÍCIOS e FALE CONOSCO ───────────── -->
     <div id="services-section">
