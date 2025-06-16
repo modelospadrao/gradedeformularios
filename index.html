@@ -728,6 +728,54 @@
 
     .callback-button:hover .icon {
     color: black; /* Ícone preto no hover */
+    }
+      
+        /* -- SEÇÃO 1: PARA RH, BENEFÍCIOS E FALE CONOSCO -- */
+    /* Este é o "manual" para quando a tela for de celular (até 767 pixels de largura) */
+    @media (max-width: 767px) {
+        /* Para os botões das seções de RH, Benefícios e Fale Conosco */
+        #services-section .services-grid {
+            grid-template-columns: repeat(2, 1fr); /* Força 2 colunas. Cada uma ocupa metade do espaço. */
+            gap: 8px; /* Diminui um pouco o espaço entre os botões para eles caberem melhor. */
+        }
+
+        /* Ajusta o tamanho dos botões dentro dessas seções */
+        #services-section .service-button {
+            padding: 10px 5px; /* Diminui o espaçamento interno do botão. */
+            font-size: 0.85rem; /* Diminui um pouco o tamanho da letra do botão. */
+        }
+
+        /* Ajusta o tamanho dos ícones (emojis) dentro desses botões */
+        button .icon,
+        a .icon {
+            font-size: 2.5rem; /* Deixa o ícone um pouco menor para caber melhor. */
+        }
+
+        /* Para a caixa de "PORTAL (ME)" e e-mails (que são maiores) */
+        #services-section .services-grid .service-highlight {
+            grid-column: 1 / -1; /* Garante que ela continue ocupando as 2 colunas inteiras. */
+        }
+    }
+
+    /* -- SEÇÃO 2: PARA OS OUTROS FORMULÁRIOS (EPI, MATERIAL, CHECKLISTS) -- */
+    /* Este é o "manual" para os botões dentro das caixas "custom-button-box" em celulares */
+    @media (max-width: 767px) {
+        .custom-button-box {
+            flex-direction: column; /* Coloca os botões um embaixo do outro (1 coluna). */
+            align-items: center; /* Centraliza os botões na tela. */
+        }
+
+        .custom-rounded-button,
+        .custom-check-button {
+            width: 90%; /* Faz o botão ocupar 90% da largura da tela. */
+            max-width: 300px; /* Mas não deixa ele ficar maior que 300 pixels de largura. */
+        }
+    }
+
+    /* -- SEÇÃO 3: EVITAR BARRA DE ROLAGEM HORIZONTAL -- */
+    /* Isso é para garantir que a tela nunca "role" para os lados no celular. */
+    html, body {
+        overflow-x: hidden; /* Esconde qualquer coisa que tente sair da tela para os lados. */
     }  
       </style>
     <!-- Biblioteca html2pdf para gerar o PDF -->
