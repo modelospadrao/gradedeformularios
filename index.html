@@ -80,22 +80,6 @@
             background-color: black;
             margin-top: 5px;
         }
-        /* Popups */
-        #popup, #error-popup, #checklist-popup, #pdf-popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            font-size: 16px;
-            border-radius: 5px;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
         .popup-buttons {
             display: flex;
             justify-content: space-around;
@@ -669,38 +653,50 @@
         vertical-align: middle;
       }
         /* Overlay: cobre a tela toda e fica por trás do popup */
-    #popup-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background-color: rgba(0,0,0,0.5);
-      z-index: 1099;
-    }
+    /* Overlay: cobre a tela toda e fica por trás do popup */
+      #popup-overlay {
+          display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100vw; height: 100vh;
+          background-color: rgba(0,0,0,0.5);
+          z-index: 1099;
+      }
 
     /* Popup centralizado, fixo na tela, sem ocupar espaço no layout */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: rgba(0,0,0,0.8);
-      color: white;
-      padding: 20px;
-      border-radius: 5px;
-      max-width: 400px;
-      font-size: 16px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      z-index: 1100;
-      text-align: left;
-    }
+      #popup {
+          display: none;
+          position: fixed;
+          top: 30%; /* Mudado de 40% para 50% para melhor centralização vertical */
+          left: 50%;
+          transform: translate(-50%, -50%); /* Corrigido de (-91%, -61%) para centralizar o popup na tela */
+          background-color: rgba(0,0,0,0.8);
+          color: white;
+          padding: 25px; /* Aumentei o padding para dar mais espaço interno (era 21px) */
+          border-radius: 5px;
+          /* max-width: 466px; <-- Este valor está fixo. Vou fazer ele responsivo. */
+          font-size: 16px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.5);
+          z-index: 1100;
+          text-align: left;
 
-    /* Botão dentro do popup */
-    #popup button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
+          /* --- ADIÇÕES PARA AUMENTAR O TAMANHO E CONTROLAR ROLAGEM/AJUSTE GERAL DA CAIXA --- */
+          width: 95%; /* Ocupa 95% da largura da tela do celular (antes não especificado para mobile) */
+          max-width: 480px; /* Aumentei o max-width para telas maiores (era 466px) */
+          box-sizing: border-box; /* **MUITO IMPORTANTE**: Inclui padding na largura e altura total para evitar rolagem horizontal. */
+          max-height: 90vh; /* Limita a altura máxima a 90% da altura da viewport. */
+          overflow-y: auto; /* Adiciona rolagem vertical INTERNA ao popup se o conteúdo for muito longo. */
+
+          /* Para o botão de fechar ficar visível, garantimos que não haja conteúdo externo atrapalhando */
+          /* Nenhuma regra adicional para elementos internos como p ou span, apenas a caixa principal */
+      }
+
+      /* Botão dentro do popup */
+      #popup button {
+        margin-top: -4px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
 
     .callback-button {
     display: inline-block;
