@@ -693,9 +693,24 @@
 
       /* Botão dentro do popup */
       #popup button {
-        margin-top: -4px;
-        padding: 10px 20px;
-        cursor: pointer;
+          /* Mantenha suas propriedades existentes, como margin-top, padding, cursor, etc. */
+          margin-top: 20px; /* Seu valor original ou o que preferir */
+          padding: 10px 20px; /* Seu valor original ou o que preferir */
+          cursor: pointer;
+
+          /* --- PROPRIEDADES PARA CENTRALIZAÇÃO --- */
+          display: block; /* Faz o botão se comportar como um bloco, ocupando a largura total disponível */
+          margin-left: auto; /* Empurra o botão para a direita até o limite do conteúdo */
+          margin-right: auto; /* Empurra o botão para a esquerda até o limite do conteúdo */
+          /* A combinação de display: block e margin-left/right: auto centraliza o bloco */
+
+          /* --- PROPRIEDADES PARA MELHOR AJUSTE DO TEXTO E TAMANHO (RECOMENDADO) --- */
+          width: 90%; /* Define a largura do botão para 90% do espaço disponível no popup */
+          max-width: 300px; /* Impede que o botão fique muito largo em telas grandes */
+          box-sizing: border-box; /* Inclui padding e borda na largura total do botão, evitando estouro */
+          white-space: normal; /* Permite que o texto do botão quebre linha se for muito longo */
+          word-wrap: break-word; /* Força a quebra de palavras muito longas */
+          text-align: center; /* Centraliza o texto DENTRO do botão */
       }
 
     .callback-button {
